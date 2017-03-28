@@ -1,11 +1,9 @@
 package com.company;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
@@ -44,28 +42,17 @@ public class CircleCollisionTester extends Application {
     public void setDragListeners(final Shape block) {
         final Delta dragDelta = new Delta();
 
-        block.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // record a delta distance for the drag and drop operation.
-                dragDelta.x = block.getLayoutX() - mouseEvent.getSceneX();
-                dragDelta.y = block.getLayoutY() - mouseEvent.getSceneY();
-                block.setCursor(Cursor.NONE);
-            }
+        block.setOnMousePressed(mouseEvent -> {
+            // record a delta distance for the drag and drop operation.
+            dragDelta.x = block.getLayoutX() - mouseEvent.getSceneX();
+            dragDelta.y = block.getLayoutY() - mouseEvent.getSceneY();
+            block.setCursor(Cursor.NONE);
         });
-        block.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                block.setCursor(Cursor.HAND);
-            }
-        });
-        block.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                block.setLayoutX(mouseEvent.getSceneX() + dragDelta.x);
-                block.setLayoutY(mouseEvent.getSceneY() + dragDelta.y);
-                checkShapeIntersection(block);
-            }
+        block.setOnMouseReleased(mouseEvent -> block.setCursor(Cursor.HAND));
+        block.setOnMouseDragged(mouseEvent -> {
+            block.setLayoutX(mouseEvent.getSceneX() + dragDelta.x);
+            block.setLayoutY(mouseEvent.getSceneY() + dragDelta.y);
+            checkShapeIntersection(block);
         });
     }
 

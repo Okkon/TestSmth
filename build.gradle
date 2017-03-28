@@ -14,5 +14,6 @@ task hello << {
 }
 
 dependencies {
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
+    compile group: 'joda-time', name: 'joda-time', version: '2.3'
+    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
 }

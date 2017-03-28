@@ -1,9 +1,11 @@
 package com.company;
 
-import com.company.myPackage.Direction;
-import com.company.myPackage.XY;
+import com.company.fxapp.utils.XY_D;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+//import org.jbox2d.dynamics.Body;
 
 /**
  * Created by olko1016 on 11/7/2016.
@@ -13,28 +15,38 @@ public class AngleTest {
 
 
     public static void main(String[] args) {
-        System.out.println(Math.cos(90));
-        for (Direction direction : Direction.CLOCKWISE_DIRECTIONS) {
-            double r = direction.countRadius();
-            System.out.println(direction);
-            double acos = Math.acos(direction.getX() / r);
-            if (direction.getY() < 0) {
-                acos = 2 * Math.PI - acos;
+        List<XY_D> places = new ArrayList<>();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == j && j == 0) {
+                    continue;
+                }
+                places.add(new XY_D(i, j));
             }
-            System.out.println("Cos = " + df2.format(acos / Math.PI));
         }
-
-        double angle = getAngleBetweenPoints(new XY(5, 5), new XY(2, 2));
-        System.out.printf("Angle = " + angle);
+        XY_D xy = new XY_D(0, 0);
+        for (XY_D place : places) {
+            System.out.println(place + " :  " + getAngleBetweenPointsInPi(xy, place));
+        }
     }
 
-    private static double getAngleBetweenPoints(XY xy1, XY xy2) {
-        double r = XY.getDistance(xy1, xy2);
+    public static double getAngleBetweenPointsInPi(XY_D xy1, XY_D xy2) {
+        double r = XY_D.getDistance(xy1, xy2);
         double result = Math.acos((xy2.getX() - xy1.getX()) / r);
         if (xy2.getY() < xy1.getY()) {
             result = 2 * Math.PI - result;
         }
 
         return result / Math.PI;
+    }
+
+    public static double getAngleBetweenPoints(XY_D xy1, XY_D xy2) {
+        double r = XY_D.getDistance(xy1, xy2);
+        double result = Math.acos((xy2.getX() - xy1.getX()) / r);
+        if (xy2.getY() < xy1.getY()) {
+            result = 2 * Math.PI - result;
+        }
+
+        return result;
     }
 }

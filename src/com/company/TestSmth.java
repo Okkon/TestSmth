@@ -21,10 +21,9 @@ public class TestSmth {
 
 
     public static void main(String[] args) {
-        f1();
-//        f2();
-        String s = telephone3;
+
     }
+
 
     private static void f2() {
         String s = null;

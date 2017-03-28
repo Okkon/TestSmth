@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.myPackage.Board;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -29,7 +28,6 @@ public class Main extends Application {
     }
 
     private void drawField(Group root) {
-        Board board = new Board(5, 5);
 
         final int centerX = 50;
         final int centerY = 50;
