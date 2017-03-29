@@ -4,10 +4,15 @@ import com.company.fxapp.core.*;
 import com.company.fxapp.events.ShiftUnitEvent;
 
 public class ShiftObjAction<T extends PlaceHaving> extends AbstractAction<T> {
+    private static ShiftObjAction INSTANCE = new ShiftObjAction();
 
-    @Override
-    public void init() {
-        aimType = AimType.Object;
+    private ShiftObjAction() {
+    }
+
+    ;
+
+    public static ShiftObjAction getInstance() {
+        return INSTANCE;
     }
 
     @Override
@@ -20,5 +25,14 @@ public class ShiftObjAction<T extends PlaceHaving> extends AbstractAction<T> {
     @Override
     protected boolean allAimsSelected() {
         return aims.size() == 2;
+    }
+
+    @Override
+    protected void setAimFilters() {
+        if (aims.isEmpty()) {
+            aimType = AimType.Object;
+        } else {
+            aimType = AimType.Cell;
+        }
     }
 }

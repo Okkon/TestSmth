@@ -5,6 +5,7 @@ import com.company.fxapp.events.ActionSelectionEvent;
 import com.company.fxapp.events.CreateUnitEvent;
 import com.company.fxapp.events.ShiftUnitEvent;
 import com.company.fxapp.graphics.BottomPane;
+import com.company.fxapp.graphics.CellVisualizer;
 import com.company.fxapp.graphics.UnitVisualizer;
 import com.company.fxapp.utils.XY;
 import com.company.fxapp.utils.XY_D;
@@ -19,24 +20,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MyApp extends Application implements GEventListener<GEvent> {
+
+    //---------GRAPHIC------------
     private final int windowWidth = 600;
     private final int windowHeight = 600;
-
-    private final int upPad = 100;
-    private final int leftPad = 100;
-    private final int circleRadius = 25;
     private final Pane mainPane = new Pane();
-    private final HashMap<GameCell, Rectangle> cellToRectMap = new HashMap<>();
-    private final GameCore gameCore = GameCore.getInstance();
-    private final HashMap<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
     private final TextField actionNameField = new TextField("test text");
+
+    //----------LOGIC--------
+    private final GameCore gameCore = GameCore.getInstance();
+    private final HashMap<GameCell, Rectangle> cellToRectMap = new HashMap<>();
+    private final HashMap<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
 
 
     @Override
@@ -47,7 +49,6 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
         VBox vBox = new VBox(5);
         vBox.setStyle("-fx-background-color: #336699;");
-
         TextField coordsTextField = new TextField("test text");
         TextField sceneCoordsTextField = new TextField("test text");
         TextField screenCoordsTextField = new TextField("test text");
@@ -81,17 +82,12 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
         final GBoard board = GBoard.getInstance();
         board.init(10, 8);
-        for (GameCell cell : board.getAllCells()) {
+        for (GameCell cell : board.getAllCells(new ArrayList<>())) {
             int length = 60;
             final XY xy = cell.getXy();
-            Rectangle rectangle = new Rectangle(length * xy.getX(), length * xy.getY(), length, length);
-            rectangle.setFill(Color.DARKGRAY);
-            rectangle.setStroke(Color.GRAY);
+            CellVisualizer rectangle = new CellVisualizer(length * xy.getX(), length * xy.getY(), length, length, cell);
             mainPane.getChildren().addAll(rectangle);
             cellToRectMap.put(cell, rectangle);
-            rectangle.setOnMouseClicked(
-                    event -> gameCore.press(cell)
-            );
         }
 
         ScrollPane s1 = new ScrollPane();
@@ -107,6 +103,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         AbstractEvent.addListener(CreateUnitEvent.class, this);
         AbstractEvent.addListener(ShiftUnitEvent.class, this);
         AbstractEvent.addListener(ActionSelectionEvent.class, this);
+        AbstractEvent.addListener(AbstractAction.FindPossibleAimsEvent.class, this);
     }
 
 
@@ -143,6 +140,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         } else if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
+        } else if (event instanceof AbstractAction.FindPossibleAimsEvent) {
+            AbstractAction.FindPossibleAimsEvent findPossibleAimsEvent = (AbstractAction.FindPossibleAimsEvent) event;
+            final List<? extends PlaceHaving> possibleAims = findPossibleAimsEvent.getPossibleAims();
+            for (PlaceHaving possibleAim : possibleAims) {
+                if (possibleAim instanceof GObj) {
+                    GObj aim = (GObj) possibleAim;
+                    final UnitVisualizer visualizer = objToVisualizerMap.get(aim);
+                    visualizer.showSelectionPossibility(findPossibleAimsEvent.getAction());
+                }
+            }
         }
     }
 

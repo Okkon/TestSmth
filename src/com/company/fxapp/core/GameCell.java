@@ -9,7 +9,7 @@ public class GameCell implements PlaceHaving {
     private XY xy;
     private PlaceHaving obj;
 
-    GameCell(XY xy) {
+    public GameCell(XY xy) {
         this.xy = xy;
     }
 

@@ -5,9 +5,11 @@ import java.util.List;
 public interface GAction<T extends PlaceHaving> {
     void cancel();
 
+    void onSelect();
+
     void perform();
 
-    List<T> getPossibleAims();
+    List<T> findPossibleAims();
 
     void tryToSelect(T obj);
 }

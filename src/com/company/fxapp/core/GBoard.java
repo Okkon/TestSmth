@@ -9,9 +9,6 @@ public class GBoard {
 
     private GBoard() {
     }
-
-    ;
-
     public static GBoard getInstance() {
         return INSTANCE;
     }
@@ -73,7 +70,7 @@ public class GBoard {
         return nearCells;
     }
 
-    public Collection<GameCell> getAllCells() {
+    public Collection<GameCell> getAllCells(List<GFilter> aimFilters) {
         return board.values();
     }
 
@@ -81,7 +78,7 @@ public class GBoard {
         unitList.add(unit);
     }
 
-    public List<GObj> getUnitList() {
+    public List<GObj> getUnitList(List<GFilter> aimFilters) {
         return unitList;
     }
 }

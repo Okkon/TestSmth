@@ -52,7 +52,6 @@ public abstract class AbstractEvent implements GEvent {
         }
     }
 
-
     public static void removeListener(Class<? extends GEvent> eventClass, GEventListener listener) {
         List<GEventListener<GEvent>> listenerList = listenersMap.get(eventClass);
         if (listenerList != null) {

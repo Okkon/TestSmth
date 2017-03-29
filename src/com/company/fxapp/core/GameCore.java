@@ -1,6 +1,7 @@
 package com.company.fxapp.core;
 
 import com.company.fxapp.actions.CreateUnitAction;
+import com.company.fxapp.actions.SelectUnitAction;
 import com.company.fxapp.actions.ShiftObjAction;
 
 import java.util.Arrays;
@@ -21,11 +22,11 @@ public class GameCore {
     }
 
     //--------Fields------------------
-    private List<GAction> actionList = Arrays.asList(new CreateUnitAction(), new ShiftObjAction());
+    private List<GAction> actionList = Arrays.asList(new CreateUnitAction(), SelectUnitAction.getInstance(), ShiftObjAction.getInstance());
     private GAction selectedAction = actionList.get(0);
 
     //-----------Logic-----------------------------------------
-    public void press(GameCell cell) {
+    public void press(PlaceHaving cell) {
         selectedAction.tryToSelect(cell);
     }
 
@@ -42,4 +43,5 @@ public class GameCore {
     public void setSelectedAction(GAction selectedAction) {
         this.selectedAction = selectedAction;
     }
+
 }

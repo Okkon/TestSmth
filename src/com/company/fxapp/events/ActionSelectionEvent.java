@@ -15,6 +15,7 @@ public class ActionSelectionEvent extends AbstractEvent {
     @Override
     protected void perform() {
         GameCore.getInstance().setSelectedAction(action);
+        action.onSelect();
     }
 
     public GAction getAction() {
