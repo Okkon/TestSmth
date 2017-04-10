@@ -14,9 +14,6 @@ public class GameCore {
 
     private GameCore() {
     }
-
-    ;
-
     public static GameCore getInstance() {
         return INSTANCE;
     }

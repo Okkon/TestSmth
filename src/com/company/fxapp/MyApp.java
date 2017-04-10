@@ -37,7 +37,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     //----------LOGIC--------
     private final GameCore gameCore = GameCore.getInstance();
-    private final HashMap<GameCell, Rectangle> cellToRectMap = new HashMap<>();
+    private final HashMap<GameCell, CellVisualizer> cellToVisualizerMap = new HashMap<>();
     private final HashMap<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
 
 
@@ -85,9 +85,9 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         for (GameCell cell : board.getAllCells(new ArrayList<>())) {
             int length = 60;
             final XY xy = cell.getXy();
-            CellVisualizer rectangle = new CellVisualizer(length * xy.getX(), length * xy.getY(), length, length, cell);
-            mainPane.getChildren().addAll(rectangle);
-            cellToRectMap.put(cell, rectangle);
+            CellVisualizer cellVisualizer = new CellVisualizer(length * xy.getX(), length * xy.getY(), length, length, cell);
+            mainPane.getChildren().addAll(cellVisualizer);
+            cellToVisualizerMap.put(cell, cellVisualizer);
         }
 
         ScrollPane s1 = new ScrollPane();
@@ -100,10 +100,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         Scene scene = new Scene(root, windowWidth, windowHeight);
         primaryStage.setScene(scene);
 
-        AbstractEvent.addListener(CreateUnitEvent.class, this);
-        AbstractEvent.addListener(ShiftUnitEvent.class, this);
-        AbstractEvent.addListener(ActionSelectionEvent.class, this);
-        AbstractEvent.addListener(AbstractAction.FindPossibleAimsEvent.class, this);
+        AbstractEvent.addSuperListener(this);
     }
 
 
@@ -114,32 +111,36 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doBeforeEvent(GEvent event) {
-
+        System.out.println(event);
     }
 
     @Override
     public void doAfterEvent(GEvent event) {
+        /*---------------CreateUnitEvent---------------------*/
         if (event instanceof CreateUnitEvent) {
             CreateUnitEvent createUnitEvent = (CreateUnitEvent) event;
             final GameCell place = createUnitEvent.getPlace();
-            final Rectangle rectangle = cellToRectMap.get(place);
+            final Rectangle rectangle = cellToVisualizerMap.get(place);
             final Pane parent = (Pane) rectangle.getParent();
             final XY_D center = getRectangleCenter(rectangle);
             final GObj obj = createUnitEvent.getObj();
             final UnitVisualizer visualizer = new UnitVisualizer(center.getX(), center.getY(), 20, obj);
             objToVisualizerMap.put(obj, visualizer);
             parent.getChildren().add(visualizer);
+            /*-------ShiftUnitEvent-----------*/
         } else if (event instanceof ShiftUnitEvent) {
             ShiftUnitEvent shiftUnitEvent = (ShiftUnitEvent) event;
             final GameCell toCell = shiftUnitEvent.getToCell();
-            final Rectangle rectangle = cellToRectMap.get(toCell);
+            final Rectangle rectangle = cellToVisualizerMap.get(toCell);
             final XY_D center = getRectangleCenter(rectangle);
             final UnitVisualizer visualizer = objToVisualizerMap.get(shiftUnitEvent.getObj());
             visualizer.setCenterX(center.getX());
             visualizer.setCenterY(center.getY());
+            /*---------------ActionSelectionEvent---------------------*/
         } else if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
+            /*---------------FindPossibleAimsEvent---------------------*/
         } else if (event instanceof AbstractAction.FindPossibleAimsEvent) {
             AbstractAction.FindPossibleAimsEvent findPossibleAimsEvent = (AbstractAction.FindPossibleAimsEvent) event;
             final List<? extends PlaceHaving> possibleAims = findPossibleAimsEvent.getPossibleAims();
@@ -147,6 +148,10 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                 if (possibleAim instanceof GObj) {
                     GObj aim = (GObj) possibleAim;
                     final UnitVisualizer visualizer = objToVisualizerMap.get(aim);
+                    visualizer.showSelectionPossibility(findPossibleAimsEvent.getAction());
+                } else if (possibleAim instanceof GameCell) {
+                    GameCell aim = (GameCell) possibleAim;
+                    final CellVisualizer visualizer = cellToVisualizerMap.get(aim);
                     visualizer.showSelectionPossibility(findPossibleAimsEvent.getAction());
                 }
             }

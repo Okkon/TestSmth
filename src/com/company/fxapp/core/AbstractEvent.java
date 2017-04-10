@@ -7,6 +7,8 @@ import java.util.Map;
 
 public abstract class AbstractEvent implements GEvent {
     private static final Map<Class, List<GEventListener<GEvent>>> listenersMap = new HashMap<>();
+    private static final List<GEventListener<GEvent>> superListeners = new ArrayList<>();
+    private boolean aborted = false;
 
     public final void process() {
         doBeforeEvent();
@@ -18,10 +20,13 @@ public abstract class AbstractEvent implements GEvent {
     }
 
     private boolean canBePerformed() {
-        return true;
+        return !aborted;
     }
 
     protected void doBeforeEvent() {
+        for (GEventListener<GEvent> superListener : superListeners) {
+            superListener.doBeforeEvent(this);
+        }
         List<GEventListener<GEvent>> listenerList = listenersMap.get(getClass());
         if (listenerList != null) {
             for (GEventListener<GEvent> listener : listenerList) {
@@ -31,6 +36,9 @@ public abstract class AbstractEvent implements GEvent {
     }
 
     protected void doAfterEvent() {
+        for (GEventListener<GEvent> superListener : superListeners) {
+            superListener.doAfterEvent(this);
+        }
         List<GEventListener<GEvent>> listenerList = listenersMap.get(getClass());
         if (listenerList != null) {
             for (GEventListener<GEvent> listener : listenerList) {
@@ -57,5 +65,9 @@ public abstract class AbstractEvent implements GEvent {
         if (listenerList != null) {
             listenerList.remove(listener);
         }
+    }
+
+    public static void addSuperListener(GEventListener<GEvent> listener) {
+        superListeners.add(listener);
     }
 }

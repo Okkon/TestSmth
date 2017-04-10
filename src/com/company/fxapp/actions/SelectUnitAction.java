@@ -10,7 +10,6 @@ public class SelectUnitAction<T extends GUnit> extends AbstractAction<T> {
 
     private SelectUnitAction() {
     }
-
     public static SelectUnitAction getInstance() {
         return INSTANCE;
     }

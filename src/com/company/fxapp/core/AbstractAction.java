@@ -1,10 +1,12 @@
 package com.company.fxapp.core;
 
+import com.company.fxapp.filters.ObjTypeFilter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractAction<T extends PlaceHaving> implements GAction<T> {
+public abstract class AbstractAction<T> implements GAction<T> {
     protected AimType aimType = AimType.ObjectsAndCells;
     protected List<T> aims = new ArrayList<>();
     protected List<GFilter> aimFilters = new ArrayList<>();
@@ -53,6 +55,7 @@ public abstract class AbstractAction<T extends PlaceHaving> implements GAction<T
         if (allAimsSelected()) {
             perform();
         } else {
+            aimFilters.clear();
             setAimFilters();
             new FindPossibleAimsEvent(this).process();
         }
@@ -60,7 +63,7 @@ public abstract class AbstractAction<T extends PlaceHaving> implements GAction<T
 
     protected boolean allAimsSelected() {
         //action performs if it has selected aims, or if it can't have any aims.
-        return AimType.None.equals(aimType) || aims.size() > 1;
+        return AimType.None.equals(aimType) || aims.size() > 0;
     }
 
     protected abstract void setAimFilters();
@@ -108,6 +111,7 @@ public abstract class AbstractAction<T extends PlaceHaving> implements GAction<T
     public abstract void doAction();
 
     public boolean canSelect(T obj) {
+        addTypeFilter();
         for (GFilter filter : aimFilters) {
             if (!filter.check(obj)) {
                 return false;
@@ -120,11 +124,24 @@ public abstract class AbstractAction<T extends PlaceHaving> implements GAction<T
         return aims.isEmpty() ? null : aims.get(0);
     }
 
+    public void addTypeFilter() {
+        switch (aimType) {
+            case Cell:
+                aimFilters.add(0, ObjTypeFilter.getInstance(GameCell.class));
+                break;
+            case Object:
+                aimFilters.add(0, ObjTypeFilter.getInstance(GUnit.class));
+                break;
+            default:
+                return;
+        }
+    }
+
     public static class FindPossibleAimsEvent extends AbstractEvent {
-        private AbstractAction<? extends PlaceHaving> action;
+        private AbstractAction action;
         private List<? extends PlaceHaving> possibleAims;
 
-        public <T extends PlaceHaving> FindPossibleAimsEvent(AbstractAction<T> action) {
+        public <T> FindPossibleAimsEvent(AbstractAction<T> action) {
             this.action = action;
         }
 

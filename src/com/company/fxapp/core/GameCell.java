@@ -2,10 +2,13 @@ package com.company.fxapp.core;
 
 import com.company.fxapp.utils.XY;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameCell implements PlaceHaving {
-    private final ArrayList<CellLink> cellLinks = new ArrayList<>();
+    //    private final ArrayList<CellLink> cellLinks = new ArrayList<>();
+    private Map<GameCell, Integer> linkedCells = new HashMap<>();
     private XY xy;
     private PlaceHaving obj;
 
@@ -35,7 +38,8 @@ public class GameCell implements PlaceHaving {
     }
 
     public void link(GameCell cell, int length) {
-        cellLinks.add(new CellLink(this, cell, length));
+        linkedCells.put(cell, length);
+        cell.linkedCells.put(this, length);
     }
 
     @Override
@@ -43,7 +47,19 @@ public class GameCell implements PlaceHaving {
         return this;
     }
 
-    public static GameCell create(int i, int j) {
-        return new GameCell(XY.get(i, j));
+    public int getDistanceToCell(GameCell toCell) {
+        return linkedCells.get(toCell);
+    }
+
+    public <T extends GameCell> boolean isLinkedWith(T cell) {
+        return linkedCells.keySet().contains(cell);
+    }
+
+    public Collection<GameCell> getLinkedCells() {
+        return linkedCells.keySet();
+    }
+
+    public Map<GameCell, Integer> getLinks() {
+        return linkedCells;
     }
 }

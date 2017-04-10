@@ -1,6 +1,5 @@
 package com.company;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,13 +13,25 @@ public class Test {
 
     //--------------------MAIN METHOD----------------
     public static void main(String[] args) {
-        Test test = new Test();
-        List<BigDecimal> list = Arrays.asList(new BigDecimal("0.00"), new BigDecimal("0.001"));
-        for (BigDecimal bd : list) {
-            System.out.println(BigDecimal.ZERO.equals(bd));
-            System.out.println(BigDecimal.ZERO.compareTo(bd) == 0);
+        priorityQueueExample();
+
+    }
+
+    private static void priorityQueueExample() {
+        final PriorityQueue<String> queue = new PriorityQueue<>((o1, o2) -> o1.length() > o2.length() ? 1 : -1);
+        queue.add("s123");
+        queue.add("s12");
+        queue.add("s1");
+        queue.add("s1234");
+        queue.add("s12346");
+        queue.add("s12345");
+        queue.add("s12347");
+        for (String s : queue) {
+            System.out.println(s);
         }
-        stringConcatTest();
+        while (queue.size() != 0) {
+            System.out.println(queue.remove());
+        }
     }
 
     private static void stringConcatTest() {
@@ -72,10 +83,6 @@ public class Test {
         System.out.println(info);
         System.out.println(info2);
         System.out.println(info2.toString().equals(info.toString()));
-
-    }
-
-    private static <T extends Serializable & List> void testMultiGeneric(T obj) {
 
     }
 

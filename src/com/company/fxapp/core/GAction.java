@@ -2,7 +2,7 @@ package com.company.fxapp.core;
 
 import java.util.List;
 
-public interface GAction<T extends PlaceHaving> {
+public interface GAction<T> {
     void cancel();
 
     void onSelect();

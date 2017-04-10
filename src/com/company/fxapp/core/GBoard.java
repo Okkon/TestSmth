@@ -32,11 +32,9 @@ public class GBoard {
                 GameCell diagonalCell = board.get(xy.changeX(1).changeY(1));
                 if (board.get(rightCell) != null) {
                     cell.link(rightCell, XY.straightLength);
-                }
-                if (board.get(rightCell) != null) {
+                } else if (board.get(bottomCell) != null) {
                     cell.link(bottomCell, XY.straightLength);
-                }
-                if (board.get(rightCell) != null) {
+                } else if (board.get(diagonalCell) != null) {
                     cell.link(diagonalCell, XY.diagonalLength);
                 }
             }

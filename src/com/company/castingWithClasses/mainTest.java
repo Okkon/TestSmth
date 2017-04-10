@@ -23,15 +23,10 @@ public class mainTest {
     private final Integer bi2 = 1;
 
     public static void main(String[] args) {
-        mainTest mainTest = new mainTest();
-        System.out.println(mainTest.list);
-        System.out.println(mainTest.listI);
-
-
-        B a = (B) new A();
-        A b = new B();
-        Number number = a.m1(1);
-        Integer integer = a.m2(1);
+        final B b = new B();
+        b.int_field = 3;
+        b.printField();
+        System.out.println(((A) b).int_field);
     }
 
     int f1() throws Exception {

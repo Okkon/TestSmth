@@ -3,26 +3,11 @@ package com.company.fxapp.core;
 import java.util.Collection;
 import java.util.Iterator;
 
-public abstract class AbstractFilter<T extends PlaceHaving> implements GFilter<T> {
-    private GObj obj;
-    private String errorText;
-    protected GameCore model = GameCore.getInstance();
-
-    /*@Override
-    public GObj getObj() {
-        return obj;
-    }
-
-    @Override
-    public GFilter setObj(GObj obj) {
-        this.obj = obj;
-        return this;
-    }*/
-
+public abstract class AbstractFilter<T> implements GFilter<T> {
     @Override
     public boolean check(T obj) {
         final boolean ok = isOk(obj);
-        if (!ok && errorText != null) {
+        if (!ok) {
 //            model.error(errorText);
         }
         return ok;

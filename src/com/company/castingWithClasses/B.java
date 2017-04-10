@@ -4,6 +4,9 @@ package com.company.castingWithClasses;
  * Created by olko1016 on 12/26/2016.
  */
 public class B extends A {
+    int int_field = 2;
+
+
     @Override
     public Integer m1(Number i) {
         return 2;

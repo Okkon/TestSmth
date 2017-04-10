@@ -2,15 +2,13 @@ package com.company.fxapp.actions;
 
 import com.company.fxapp.core.*;
 import com.company.fxapp.events.ShiftUnitEvent;
+import com.company.fxapp.filters.VacantCellFilter;
 
 public class ShiftObjAction<T extends PlaceHaving> extends AbstractAction<T> {
     private static ShiftObjAction INSTANCE = new ShiftObjAction();
 
     private ShiftObjAction() {
     }
-
-    ;
-
     public static ShiftObjAction getInstance() {
         return INSTANCE;
     }
@@ -33,6 +31,7 @@ public class ShiftObjAction<T extends PlaceHaving> extends AbstractAction<T> {
             aimType = AimType.Object;
         } else {
             aimType = AimType.Cell;
+            addAimFilter(VacantCellFilter.getInstance());
         }
     }
 }

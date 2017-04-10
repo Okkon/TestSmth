@@ -21,7 +21,22 @@ public class TestSmth {
 
 
     public static void main(String[] args) {
+        System.out.println(6 & 7);
+        System.out.println(5 & 10);
+        bitExperiments(-4);
+    }
 
+    private static void bitExperiments(int k) {
+        System.out.println("----------STARTING EXPERIMENTS WITH NUMBER = " + k);
+        System.out.println("Integer.toBinaryString(k) = " + Integer.toBinaryString(k));
+        printInBinary("k >>  1", k >> 1);
+        printInBinary("k >>> 1", k >>> 1);
+        printInBinary("~k", ~k);
+    }
+
+    private static void printInBinary(String format, int k) {
+        final String binary = Integer.toBinaryString(k);
+        System.out.println(String.format(format + " = %s, binary = %s, bytes = %s", k, binary, binary.length()));
     }
 
 
