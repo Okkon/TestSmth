@@ -14,20 +14,22 @@ public class UnitVisualizer extends Circle implements Visualizer {
 
     public UnitVisualizer(double x, double y, int r, GObj obj) {
         super(x, y, r);
-        setDefaultColors();
+        setDefaults();
         setOnMouseClicked(o -> GameCore.getInstance().press(obj));
     }
 
-    private void setDefaultColors() {
+
+    @Override
+    public void setDefaults() {
+        if (timeline != null) {
+            timeline.stop();
+        }
         setFill(baseColor);
     }
 
     @Override
     public void showSelectionPossibility(AbstractAction<? extends PlaceHaving> action) {
-        if (timeline != null) {
-            timeline.stop();
-            setDefaultColors();
-        }
+        setDefaults();
         if (action != null) {
             timeline = AnimationHelper.createColorAnimation(this, Color.RED);
             timeline.play();

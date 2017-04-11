@@ -85,7 +85,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
         if (AimType.Cell.equals(aimType)) {
             possibleAims.addAll((Collection<? extends T>) board.getAllCells(aimFilters));
         } else if (AimType.Object.equals(aimType)) {
-            return (List<T>) board.getUnitList(aimFilters);
+            possibleAims.addAll((Collection<? extends T>) board.getUnitList(aimFilters));
         } else if (AimType.ObjectsAndCells.equals(aimType)) {
             possibleAims.add((T) board.getAllCells(aimFilters));
             possibleAims.add((T) board.getUnitList(aimFilters));

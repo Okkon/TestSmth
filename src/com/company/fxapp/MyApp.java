@@ -4,6 +4,7 @@ import com.company.fxapp.core.*;
 import com.company.fxapp.events.ActionSelectionEvent;
 import com.company.fxapp.events.CreateUnitEvent;
 import com.company.fxapp.events.ShiftUnitEvent;
+import com.company.fxapp.graphics.AnimationHelper;
 import com.company.fxapp.graphics.BottomPane;
 import com.company.fxapp.graphics.CellVisualizer;
 import com.company.fxapp.graphics.UnitVisualizer;
@@ -144,15 +145,18 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         } else if (event instanceof AbstractAction.FindPossibleAimsEvent) {
             AbstractAction.FindPossibleAimsEvent findPossibleAimsEvent = (AbstractAction.FindPossibleAimsEvent) event;
             final List<? extends PlaceHaving> possibleAims = findPossibleAimsEvent.getPossibleAims();
+            AnimationHelper.clearAnimations();
             for (PlaceHaving possibleAim : possibleAims) {
                 if (possibleAim instanceof GObj) {
                     GObj aim = (GObj) possibleAim;
                     final UnitVisualizer visualizer = objToVisualizerMap.get(aim);
                     visualizer.showSelectionPossibility(findPossibleAimsEvent.getAction());
+                    AnimationHelper.addAnimatedVisualizer(visualizer);
                 } else if (possibleAim instanceof GameCell) {
                     GameCell aim = (GameCell) possibleAim;
                     final CellVisualizer visualizer = cellToVisualizerMap.get(aim);
                     visualizer.showSelectionPossibility(findPossibleAimsEvent.getAction());
+                    AnimationHelper.addAnimatedVisualizer(visualizer);
                 }
             }
         }

@@ -17,6 +17,7 @@ public class CreateUnitEvent extends AbstractEvent {
     @Override
     protected void perform() {
         unit.setPlace(place);
+        place.setObj(unit);
         GBoard.getInstance().addUnit(unit);
     }
 

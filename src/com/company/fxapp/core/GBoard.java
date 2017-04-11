@@ -56,27 +56,29 @@ public class GBoard {
         return cells;
     }
 
-    public List<GameCell> getEmptyNearCells(GameCell cell) {
-        final List<GameCell> nearCells = getNearCells(cell);
-        final Iterator<GameCell> iterator = nearCells.iterator();
-        while (iterator.hasNext()) {
-            GameCell next = iterator.next();
-            if (next.isNotEmpty()) {
-                iterator.remove();
-            }
-        }
-        return nearCells;
+    public Collection<GameCell> getAllCells(List<GFilter> aimFilters) {
+        return filterCollection(aimFilters, board.values());
     }
 
-    public Collection<GameCell> getAllCells(List<GFilter> aimFilters) {
-        return board.values();
+    private <T> Collection<T> filterCollection(List<GFilter> aimFilters, Collection<T> values) {
+        final Set<T> result = new HashSet<>(values);
+        final Iterator<T> iterator = result.iterator();
+        while (iterator.hasNext()) {
+            T next = iterator.next();
+            for (GFilter filter : aimFilters) {
+                if (!filter.isOk(next)) {
+                    iterator.remove();
+                }
+            }
+        }
+        return result;
     }
 
     public void addUnit(GObj unit) {
         unitList.add(unit);
     }
 
-    public List<GObj> getUnitList(List<GFilter> aimFilters) {
-        return unitList;
+    public Collection<GObj> getUnitList(List<GFilter> aimFilters) {
+        return filterCollection(aimFilters, unitList);
     }
 }

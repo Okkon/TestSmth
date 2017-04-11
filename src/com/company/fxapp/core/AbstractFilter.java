@@ -13,8 +13,6 @@ public abstract class AbstractFilter<T> implements GFilter<T> {
         return ok;
     }
 
-    protected abstract boolean isOk(T obj);
-
     @Override
     public void filter(Collection<T> collection) {
 //        collection.stream().filter(o -> !isOk(o));

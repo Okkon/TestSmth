@@ -31,21 +31,6 @@ public class Player {
         return color;
     }
 
-    public List<GObj> getUnits() {
-        List<GObj> units = new ArrayList<GObj>();
-        return units;
-    }
-
-    public List<GObj> getActiveUnits() {
-        List<GObj> units = new ArrayList<GObj>();
-        for (GObj unit : getUnits()) {
-            /*if (unit.canAct()) {
-                units.add(unit);
-            }*/
-        }
-        return units;
-    }
-
     public List<GObj> getAvailableUnits() {
         return availableUnits;
     }

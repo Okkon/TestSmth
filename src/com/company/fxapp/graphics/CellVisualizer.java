@@ -15,23 +15,24 @@ public class CellVisualizer extends Rectangle implements Visualizer {
 
     public CellVisualizer(int x, int y, int width, int height, GameCell cell) {
         super(x, y, width, height);
-        setDefaultColors();
+        setDefaults();
         setOnMouseClicked(
                 event -> GameCore.getInstance().press(cell)
         );
     }
 
-    private void setDefaultColors() {
+    @Override
+    public void setDefaults() {
+        if (timeline != null) {
+            timeline.stop();
+        }
         setFill(baseColor);
         setStroke(baseStrokeColor);
     }
 
     @Override
     public void showSelectionPossibility(AbstractAction<? extends PlaceHaving> action) {
-        if (timeline != null) {
-            timeline.stop();
-            setDefaultColors();
-        }
+        setDefaults();
         if (action != null) {
             timeline = AnimationHelper.createColorAnimation(this, baseColor.brighter());
             timeline.play();

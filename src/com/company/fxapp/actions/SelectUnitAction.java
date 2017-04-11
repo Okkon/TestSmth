@@ -24,6 +24,6 @@ public class SelectUnitAction<T extends GUnit> extends AbstractAction<T> {
     @Override
     public void doAction() {
         selectedObj = getAim();
-        new ActionSelectionEvent(selectedObj.getBaseAction());
+        new ActionSelectionEvent(selectedObj.getBaseAction()).process();
     }
 }
