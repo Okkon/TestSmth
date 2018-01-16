@@ -182,7 +182,7 @@ public class LayoutExample extends Application {
         grid.add(chartSubtitle, 1, 1, 2, 1);
 
         // House icon in column 1, rows 1-2
-        ImageView imageHouse = new ImageView(new Image("File:graphics/house.png"));
+        ImageView imageHouse = new ImageView(new Image("File:Graphics/house.png"));
         grid.add(imageHouse, 0, 0, 1, 2);
 
         // Left label in column 1 (bottom), row 3
@@ -192,7 +192,7 @@ public class LayoutExample extends Application {
 
         // Chart in columns 2-3, row 3
         ImageView imageChart = new ImageView(
-                new Image("File:graphics/piechart.png"));
+                new Image("File:Graphics/piechart.png"));
         grid.add(imageChart, 1, 2, 2, 1);
 
         // Right label in column 4 (top), row 3
@@ -239,7 +239,7 @@ public class LayoutExample extends Application {
         for (int i=0; i<8; i++) {
             pages[i] = new ImageView(
                     new Image(LayoutExample.class.getResourceAsStream(
-                            "graphics/chart_"+(i+1)+".png")));
+                            "Graphics/chart_"+(i+1)+".png")));
             tile.getChildren().add(pages[i]);
         }
 

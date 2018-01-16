@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/src/ActionEngine/ActionEngine.iml" filepath="$PROJECT_DIR$/src/ActionEngine/ActionEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/Graphics/Graphics.iml" filepath="$PROJECT_DIR$/src/Graphics/Graphics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/PlaceEngine/PlaceEngine.iml" filepath="$PROJECT_DIR$/src/PlaceEngine/PlaceEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/SevenTowers/SevenTowers.iml" filepath="$PROJECT_DIR$/src/SevenTowers/SevenTowers.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TestSmth.iml" filepath="$PROJECT_DIR$/.idea/modules/TestSmth.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TestSmth_integTest.iml" filepath="$PROJECT_DIR$/.idea/modules/TestSmth_integTest.iml" group="TestSmth" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TestSmth_main.iml" filepath="$PROJECT_DIR$/.idea/modules/TestSmth_main.iml" group="TestSmth" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TestSmth_test.iml" filepath="$PROJECT_DIR$/.idea/modules/TestSmth_test.iml" group="TestSmth" />
+      <module fileurl="file://$PROJECT_DIR$/src/UnitEngine/UnitEngine.iml" filepath="$PROJECT_DIR$/src/UnitEngine/UnitEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/Utils/Utils.iml" filepath="$PROJECT_DIR$/src/Utils/Utils.iml" />
     </modules>
   </component>
 </project>
