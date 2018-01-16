@@ -15,7 +15,6 @@ import logic.*;
 import utils.XY;
 import utils.XY_D;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,7 +83,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
         final GBoard board = GBoard.getInstance();
         board.init(10, 8);
-        for (GameCell cell : board.getAllCells(new ArrayList<>())) {
+        for (GameCell cell : board.getAllCells()) {
             int length = 60;
             int tap = 5;
             final XY xy = cell.getXy();
@@ -126,14 +125,14 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doAfterEvent(GEvent event) {
-        /*---------------CreateUnitEvent---------------------*/
-        if (event instanceof CreateUnitEvent) {
-            CreateUnitEvent createUnitEvent = (CreateUnitEvent) event;
-            final GameCell place = createUnitEvent.getPlace();
+        /*---------------logic.CreateObjEvent---------------------*/
+        if (event instanceof CreateObjEvent) {
+            CreateObjEvent createObjEvent = (CreateObjEvent) event;
+            final GameCell place = createObjEvent.getPlace();
             final Rectangle rectangle = cellToVisualizerMap.get(place);
             final Pane parent = (Pane) rectangle.getParent();
             final XY_D center = getRectangleCenter(rectangle);
-            final GObj obj = createUnitEvent.getObj();
+            final GObj obj = createObjEvent.getObj();
             final UnitVisualizer visualizer = new UnitVisualizer(center.getX(), center.getY(), 20, obj);
             objToVisualizerMap.put(obj, visualizer);
             parent.getChildren().add(visualizer);
@@ -146,7 +145,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             final UnitVisualizer visualizer = objToVisualizerMap.get(shiftUnitEvent.getObj());
             visualizer.setCenterX(center.getX());
             visualizer.setCenterY(center.getY());
-            /*---------------ActionSelectionEvent---------------------*/
+            /*---------------logic.ActionSelectionEvent---------------------*/
         } else if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
@@ -154,7 +153,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             /*---------------AimSelectionEvent---------------------*/
         } else if (event instanceof AbstractAction.AimSelectionEvent) {
             AbstractAction.AimSelectionEvent aimSelectionEvent = (AbstractAction.AimSelectionEvent) event;
-            final List possibleAims = aimSelectionEvent.getPossibleAims();
+            final List possibleAims = gameCore.findAims(aimSelectionEvent.getAimRequirement());
             AnimationHelper.clearAnimations();
             for (Object possibleAim : possibleAims) {
                 if (possibleAim instanceof GObj) {

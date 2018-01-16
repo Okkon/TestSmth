@@ -1,6 +1,6 @@
-import logic.AbstractAction;
-import logic.GameCell;
-import logic.VacantCellFilter;
+package logic;
+
+import tools.PEConst;
 
 public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
     private static CreateUnitAction INSTANCE;
@@ -10,7 +10,7 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
 
     @Override
     public void init() {
-        addAimFilter("Cell where to create unit", VacantCellFilter.getInstance());
+        addAimFilter("Cell where to create unit", PEConst.CELL_FILTER, PEConst.VACANT_CELL_FILTER);
     }
 
     public static CreateUnitAction getInstance() {
@@ -24,6 +24,6 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
 
     @Override
     public void doAction() {
-        new CreateUnitEvent((getAim()), new GUnit(footmanUnitType)).process();
+        new CreateObjEvent((getAim()), new GUnit(footmanUnitType)).process();
     }
 }

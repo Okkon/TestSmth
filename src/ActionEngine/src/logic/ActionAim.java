@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,23 +20,6 @@ public class ActionAim<T> {
 
     public List<GFilter<T>> getFilters() {
         return filters;
-    }
-
-    public List<T> findPossibleAims() {
-        List<T> possibleAims = new ArrayList<T>();
-        List<GFilter> filters = new ArrayList<>(this.filters);
-        //TODO : mafe find aims logic
-        /*final GBoard board = GBoard.getInstance();
-        if (AimType.Cell.equals(aimType)) {
-            possibleAims.addAll((Collection<? extends T>) board.getAllCells(filters));
-        } else if (AimType.Object.equals(aimType)) {
-            possibleAims.addAll((Collection<? extends T>) board.getUnitList(filters));
-        } else if (AimType.ObjectsAndCells.equals(aimType)) {
-            possibleAims.add((T) board.getAllCells(filters));
-            possibleAims.add((T) board.getUnitList(filters));
-        }*/
-
-        return possibleAims;
     }
 
     public void setSelectedAim(Object selectedAim) {

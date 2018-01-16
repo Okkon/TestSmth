@@ -1,8 +1,6 @@
 package logic;
 
-import tools.PEConst;
-
-public class VacantCellFilter<T> extends AbstractFilter<T> {
+public class VacantCellFilter<T extends GameCell> extends AbstractFilter<T> {
     private static final VacantCellFilter INSTANCE = new VacantCellFilter();
 
     private VacantCellFilter() {
@@ -14,6 +12,6 @@ public class VacantCellFilter<T> extends AbstractFilter<T> {
 
     @Override
     public boolean isOk(T cell) {
-        return PEConst.CELL_FILTER.isOk(cell) && ((GameCell) cell).getObj() == null;
+        return cell.getObj() == null;
     }
 }

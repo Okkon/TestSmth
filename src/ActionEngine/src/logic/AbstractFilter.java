@@ -15,7 +15,6 @@ public abstract class AbstractFilter<T> implements GFilter<T> {
 
     @Override
     public void filter(Collection<T> collection) {
-//        collection.stream().filter(o -> !isOk(o));
         Iterator<T> iterator = collection.iterator();
         while (iterator.hasNext()) {
             T next = iterator.next();

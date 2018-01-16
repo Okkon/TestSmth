@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import logic.AbstractAction;
 import logic.GameCell;
+import logic.GameCore;
 import logic.PlaceHaving;
 
 public class CellVisualizer extends Rectangle implements Visualizer {

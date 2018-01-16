@@ -1,3 +1,5 @@
+package logic;
+
 public class HitDamage {
     private final int totalDamage;
     private final AttackProps attackProps;

@@ -112,23 +112,24 @@ public abstract class AbstractAction<T> implements GAction<T> {
 
     public static class AimSelectionEvent extends AbstractEvent {
         private AbstractAction action;
-        private List<?> possibleAims;
+        private ActionAim aim;
+
+        public ActionAim getAimRequirement() {
+            return aim;
+        }
 
         public AimSelectionEvent(AbstractAction action) {
             this.action = action;
         }
 
-        public List<?> getPossibleAims() {
-            return possibleAims;
-        }
-
         @Override
         protected void perform() {
-            possibleAims = action.getAimToSelect().findPossibleAims();
+            aim = action.getAimToSelect();
         }
 
         public AbstractAction getAction() {
             return action;
         }
     }
+
 }

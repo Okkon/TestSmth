@@ -1,12 +1,9 @@
-import logic.AbstractEvent;
-import logic.GEvent;
-import logic.GEventListener;
-import logic.PlaceHaving;
+package logic;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractMod<T extends GEvent, H extends PlaceHaving> implements GEventListener<T> {
+public abstract class GMod<T extends GEvent, H extends GObj> implements GEventListener<T> {
     private List<H> holderList = new ArrayList<>();
     protected Class<? extends GEvent> eventClass;
 

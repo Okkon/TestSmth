@@ -1,4 +1,4 @@
-import logic.AbstractAction;
+package logic;
 
 public abstract class Skill<T> extends AbstractAction<T> {
     private GUnit actor;

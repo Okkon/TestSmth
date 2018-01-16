@@ -1,5 +1,4 @@
-import logic.AbstractEvent;
-import logic.GAction;
+package logic;
 
 public class ActionSelectionEvent extends AbstractEvent {
 

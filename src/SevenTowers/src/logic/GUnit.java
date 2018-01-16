@@ -1,6 +1,4 @@
-import logic.GAction;
-import logic.GObj;
-import logic.ShiftObjAction;
+package logic;
 
 import java.util.List;
 

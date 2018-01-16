@@ -57,8 +57,8 @@ public class GBoard {
         return cells;
     }
 
-    public Collection<GameCell> getAllCells(List<GFilter> aimFilters) {
-        return filterCollection(aimFilters, board.values());
+    public Collection<GameCell> getAllCells() {
+        return board.values();
     }
 
     private <T> Collection<T> filterCollection(List<GFilter> aimFilters, Collection<T> values) {
@@ -79,7 +79,7 @@ public class GBoard {
         unitList.add(unit);
     }
 
-    public Collection<GObj> getUnitList(List<GFilter> aimFilters) {
-        return filterCollection(aimFilters, unitList);
+    public List<GObj> getObjList() {
+        return unitList;
     }
 }
