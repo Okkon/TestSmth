@@ -23,6 +23,11 @@ public class ClassFilter<T> extends AbstractFilter<T> {
 
 
     @Override
+    public String toString() {
+        return "ClassFilter - " + aClass.getSimpleName();
+    }
+
+    @Override
     public boolean isOk(T obj) {
         return aClass.isInstance(obj);
     }

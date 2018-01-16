@@ -76,6 +76,11 @@ public abstract class AbstractAction<T> implements GAction<T> {
         }
     }
 
+    @Override
+    public List<ActionAim<T>> getAims() {
+        return actionAims;
+    }
+
     protected void afterPerform() {
         clearAims();
     }

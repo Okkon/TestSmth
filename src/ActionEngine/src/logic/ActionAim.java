@@ -9,6 +9,11 @@ public class ActionAim<T> {
     private List<GFilter<T>> filters;
     private T selectedAim;
 
+    @Override
+    public String toString() {
+        return name + " : " + filters.toString();
+    }
+
     public ActionAim(String aimName, GFilter<T>[] filters) {
         this.name = aimName;
         this.filters = Arrays.asList(filters);

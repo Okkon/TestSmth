@@ -32,6 +32,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
     private final HashMap<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
 
     private VBox actionInfoBox;
+    private VBox aimsBox;
     private Label actionNameLabel = new Label();
 
 
@@ -59,12 +60,15 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             children.add(button);
         }
 
-        actionInfoBox = new VBox(5);
+        actionInfoBox = new VBox(15);
         actionInfoBox.setStyle("-fx-background-color: #336699;");
+
+        aimsBox = new VBox(15);
 
         actionInfoBox.getChildren().addAll(
                 new Label("Selected Action:"),
-                actionNameLabel
+                actionNameLabel,
+                aimsBox
         );
 
         mainPane.setStyle("-fx-border-color: orange; -fx-border-width: 20; -fx-background-color: #333366;");
@@ -125,6 +129,19 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doAfterEvent(GEvent event) {
+        if (event instanceof ActionSelectionEvent) {
+            ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
+            actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
+            actionNameLabel.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
+            List<ActionAim> aims = ((ActionSelectionEvent) event).getAction().getAims();
+            ObservableList<Node> children = aimsBox.getChildren();
+            children.clear();
+            for (ActionAim aim : aims) {
+                children.add(new Label(aim.toString()));
+            }
+        } else {
+            AnimationHelper.clearAnimations();
+        }
         /*---------------logic.CreateObjEvent---------------------*/
         if (event instanceof CreateObjEvent) {
             CreateObjEvent createObjEvent = (CreateObjEvent) event;
@@ -145,16 +162,11 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             final UnitVisualizer visualizer = objToVisualizerMap.get(shiftUnitEvent.getObj());
             visualizer.setCenterX(center.getX());
             visualizer.setCenterY(center.getY());
-            /*---------------logic.ActionSelectionEvent---------------------*/
-        } else if (event instanceof ActionSelectionEvent) {
-            ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
-            actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
-            actionNameLabel.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
             /*---------------AimSelectionEvent---------------------*/
         } else if (event instanceof AbstractAction.AimSelectionEvent) {
             AbstractAction.AimSelectionEvent aimSelectionEvent = (AbstractAction.AimSelectionEvent) event;
             final List possibleAims = gameCore.findAims(aimSelectionEvent.getAimRequirement());
-            AnimationHelper.clearAnimations();
+//            AnimationHelper.clearAnimations();
             for (Object possibleAim : possibleAims) {
                 if (possibleAim instanceof GObj) {
                     GObj aim = (GObj) possibleAim;

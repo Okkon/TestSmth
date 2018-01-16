@@ -14,6 +14,11 @@ public abstract class AbstractFilter<T> implements GFilter<T> {
     }
 
     @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
+    @Override
     public void filter(Collection<T> collection) {
         Iterator<T> iterator = collection.iterator();
         while (iterator.hasNext()) {

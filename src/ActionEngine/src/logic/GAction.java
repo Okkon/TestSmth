@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.List;
+
 public interface GAction<T> {
     void cancel();
 
@@ -8,4 +10,7 @@ public interface GAction<T> {
     void perform();
 
     void tryToSelect(Object obj);
+
+    List<ActionAim<T>> getAims();
+
 }
