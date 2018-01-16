@@ -1,3 +1,4 @@
+package logic;
 
 public class ShiftObjectEvent extends AbstractEvent {
     private GameCell toCell;

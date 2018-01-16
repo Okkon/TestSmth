@@ -1,3 +1,7 @@
+import logic.GAction;
+import logic.PlaceHaving;
+import logic.ShiftObjAction;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,6 +12,7 @@ public class GameCore {
 
     private GameCore() {
     }
+
     public static GameCore getInstance() {
         return INSTANCE;
     }

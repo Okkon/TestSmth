@@ -1,3 +1,6 @@
+import logic.AbstractAction;
+import logic.GAction;
+
 public class SelectUnitAction<T extends GUnit> extends AbstractAction<T> {
     private static SelectUnitAction INSTANCE = new SelectUnitAction();
 
@@ -10,7 +13,7 @@ public class SelectUnitAction<T extends GUnit> extends AbstractAction<T> {
 
     @Override
     public void init() {
-        addAimFilter("Unit to select", AimType.Object, ClassFilter.getInstance(GUnit.class));
+        addAimFilter("Unit to select", STConst.UNIT_FILTER);
     }
 
     @Override

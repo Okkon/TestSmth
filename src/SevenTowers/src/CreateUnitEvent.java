@@ -1,3 +1,8 @@
+import logic.AbstractEvent;
+import logic.GBoard;
+import logic.GObj;
+import logic.GameCell;
+
 public class CreateUnitEvent extends AbstractEvent {
     private GameCell place;
     private GObj unit;

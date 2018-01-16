@@ -1,3 +1,7 @@
+package logic;
+
+import utils.XY;
+
 import java.util.*;
 
 public class GBoard {
@@ -5,6 +9,7 @@ public class GBoard {
 
     private GBoard() {
     }
+
     public static GBoard getInstance() {
         return INSTANCE;
     }

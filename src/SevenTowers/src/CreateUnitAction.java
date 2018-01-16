@@ -1,3 +1,7 @@
+import logic.AbstractAction;
+import logic.GameCell;
+import logic.VacantCellFilter;
+
 public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
     private static CreateUnitAction INSTANCE;
 
@@ -6,7 +10,7 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
 
     @Override
     public void init() {
-        addAimFilter("Cell where to create unit", AimType.Cell, VacantCellFilter.getInstance());
+        addAimFilter("Cell where to create unit", VacantCellFilter.getInstance());
     }
 
     public static CreateUnitAction getInstance() {

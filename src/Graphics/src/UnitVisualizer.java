@@ -1,6 +1,9 @@
 import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import logic.AbstractAction;
+import logic.GObj;
+import logic.PlaceHaving;
 
 public class UnitVisualizer extends Circle implements Visualizer {
     private final Color baseColor = Color.GOLD;

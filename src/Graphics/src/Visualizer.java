@@ -1,3 +1,6 @@
+import logic.AbstractAction;
+import logic.PlaceHaving;
+
 public interface Visualizer {
     void setDefaults();
 

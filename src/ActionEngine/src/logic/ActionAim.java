@@ -1,3 +1,5 @@
+package logic;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -5,13 +7,11 @@ import java.util.List;
 
 public class ActionAim<T> {
     private String name;
-    private AimType aimType;
     private List<GFilter<T>> filters;
     private T selectedAim;
 
-    public ActionAim(String aimName, AimType aimType, GFilter<T>[] filters) {
+    public ActionAim(String aimName, GFilter<T>[] filters) {
         this.name = aimName;
-        this.aimType = aimType;
         this.filters = Arrays.asList(filters);
     }
 

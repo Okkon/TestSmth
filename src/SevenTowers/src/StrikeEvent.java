@@ -1,3 +1,6 @@
+import logic.AbstractEvent;
+import logic.PlaceHaving;
+
 public class StrikeEvent extends AbstractEvent {
     private final GUnit actor;
     private final PlaceHaving aim;

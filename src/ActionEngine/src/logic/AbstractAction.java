@@ -1,3 +1,5 @@
+package logic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,8 @@ public abstract class AbstractAction<T> implements GAction<T> {
         init();
     }
 
-    protected void addAimFilter(String aimName, AimType aimType, GFilter<T>... filters) {
-        actionAims.add(new ActionAim<T>(aimName, aimType, filters));
+    protected void addAimFilter(String aimName, GFilter<T>... filters) {
+        actionAims.add(new ActionAim<T>(aimName, filters));
     }
 
     public abstract void init();

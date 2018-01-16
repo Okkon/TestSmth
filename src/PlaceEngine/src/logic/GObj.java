@@ -1,3 +1,5 @@
+package logic;
+
 public class GObj implements PlaceHaving, OwnerHaving {
     private GameCell place;
     private Player player;

@@ -11,6 +11,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import logic.*;
+import utils.XY;
+import utils.XY_D;
 
 import java.util.ArrayList;
 import java.util.HashMap;

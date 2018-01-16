@@ -1,3 +1,4 @@
+import logic.AbstractEvent;
 
 public class UnitHitEvent extends AbstractEvent {
     private final GUnit aim;

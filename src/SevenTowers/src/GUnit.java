@@ -1,3 +1,7 @@
+import logic.GAction;
+import logic.GObj;
+import logic.ShiftObjAction;
+
 import java.util.List;
 
 public class GUnit extends GObj {
@@ -12,7 +16,9 @@ public class GUnit extends GObj {
     }
 
     public GAction getBaseAction() {
-        return SelectUnitAction.getInstance();
+        ShiftObjAction shiftObjAction = ShiftObjAction.getInstance();
+        shiftObjAction.tryToSelect(this);
+        return shiftObjAction;
     }
 
     public void loseMp(int k) {

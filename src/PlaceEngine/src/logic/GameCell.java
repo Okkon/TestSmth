@@ -1,9 +1,13 @@
+package logic;
+
+import utils.XY;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameCell implements PlaceHaving {
-    //    private final ArrayList<CellLink> cellLinks = new ArrayList<>();
+    //    private final ArrayList<logic.CellLink> cellLinks = new ArrayList<>();
     private Map<GameCell, Integer> linkedCells = new HashMap<>();
     private XY xy;
     private PlaceHaving obj;

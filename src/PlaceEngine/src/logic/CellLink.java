@@ -1,3 +1,5 @@
+package logic;
+
 public class CellLink {
     private final GameCell fromCell;
     private final GameCell toCell;

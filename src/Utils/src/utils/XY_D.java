@@ -1,3 +1,5 @@
+package utils;
+
 public final class XY_D {
     private final double x;
     private final double y;
@@ -59,7 +61,7 @@ public final class XY_D {
     public static double getDistance(XY_D p1, XY_D p2) {
         return Math.sqrt(
                 Math.pow(p1.getX() - p2.getX(), 2)
-                + Math.pow(p1.getY() - p2.getY(), 2)
+                        + Math.pow(p1.getY() - p2.getY(), 2)
         );
     }
 

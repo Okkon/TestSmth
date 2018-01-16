@@ -1,3 +1,5 @@
+package logic;
+
 public interface GAction<T> {
     void cancel();
 

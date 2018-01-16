@@ -1,3 +1,4 @@
+package logic;
 
 public class IsNearFilter<T extends PlaceHaving> extends AbstractFilter<T> {
     private static final IsNearFilter INSTANCE = new IsNearFilter();

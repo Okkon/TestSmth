@@ -1,3 +1,7 @@
+package logic;
+
+import static tools.PEConst.OBJ_FILTER;
+import static tools.PEConst.VACANT_CELL_FILTER;
 
 public class ShiftObjAction<T> extends AbstractAction<T> {
     private static ShiftObjAction INSTANCE = new ShiftObjAction();
@@ -7,8 +11,8 @@ public class ShiftObjAction<T> extends AbstractAction<T> {
 
     @Override
     public void init() {
-        addAimFilter("Object to move", AimType.Object, ClassFilter.getInstance(GObj.class));
-        addAimFilter("Place where to move", AimType.Cell, ClassFilter.getInstance(GameCell.class));
+        addAimFilter("Object to move", OBJ_FILTER);
+        addAimFilter("Place where to move", VACANT_CELL_FILTER);
     }
 
     public static ShiftObjAction getInstance() {
