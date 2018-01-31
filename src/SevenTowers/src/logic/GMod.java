@@ -24,4 +24,8 @@ public abstract class GMod<T extends GEvent, H extends GObj> implements GEventLi
             AbstractEvent.removeListener(eventClass, this);
         }
     }
+
+    public String getName() {
+        return getClass().getSimpleName();
+    }
 }

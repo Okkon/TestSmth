@@ -10,6 +10,7 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
 
     @Override
     public void init() {
+        addAimFilter("Unit type to create", ClassFilter.getInstance(UnitType.class));
         addAimFilter("Cell where to create unit", PEConst.CELL_FILTER, PEConst.VACANT_CELL_FILTER);
     }
 
@@ -20,10 +21,8 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
         return INSTANCE;
     }
 
-    private final UnitType footmanUnitType = new UnitType(25, 6);
-
     @Override
     public void doAction() {
-        new CreateObjEvent((getAim()), new GUnit(footmanUnitType)).process();
+        new CreateObjEvent((getAim()), new GUnit(BaseTypes.Footman.getType())).process();
     }
 }

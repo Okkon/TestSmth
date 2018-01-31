@@ -114,6 +114,10 @@ public abstract class AbstractAction<T> implements GAction<T> {
         return actionAims.get(index).getSelectedAim();
     }
 
+    public String getDescription() {
+        return "Description of " + getClass().getSimpleName();
+    }
+
 
     public static class AimSelectionEvent extends AbstractEvent {
         private AbstractAction action;

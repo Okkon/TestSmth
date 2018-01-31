@@ -10,7 +10,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.*;
 import utils.XY;
 import utils.XY_D;
@@ -34,11 +36,14 @@ public class MyApp extends Application implements GEventListener<GEvent> {
     private VBox actionInfoBox;
     private VBox aimsBox;
     private Label actionNameLabel = new Label();
+    private Stage primaryStage;
+    private Scene scene;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Simple Application");
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Simple Application");
         primaryStage.show();
 
         VBox infoBox = new VBox(5);
@@ -110,7 +115,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         Pane bottomPane = new BottomPane();
         root.setBottom(bottomPane);
 
-        Scene scene = new Scene(root, windowWidth, windowHeight);
+        scene = new Scene(root, windowWidth, windowHeight);
         primaryStage.setScene(scene);
 
         AbstractEvent.addSuperListener(this);
@@ -165,7 +170,15 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             /*---------------AimSelectionEvent---------------------*/
         } else if (event instanceof AbstractAction.AimSelectionEvent) {
             AbstractAction.AimSelectionEvent aimSelectionEvent = (AbstractAction.AimSelectionEvent) event;
-            final List possibleAims = gameCore.findAims(aimSelectionEvent.getAimRequirement());
+            ActionAim requirement = aimSelectionEvent.getAimRequirement();
+            final List possibleAims = gameCore.findAims(requirement);
+            if (requirement.getFilters().get(0).equals(ClassFilter.getInstance(UnitType.class))) {
+                final Stage dialog = createDialog();
+                dialog.initModality(Modality.NONE);
+                UnitTypeSelector unitTypeSelector = new UnitTypeSelector(BaseTypes.getTypes(), dialog, aimSelectionEvent.getAction());
+                //TODO: add selector close on selectActionEvent
+                dialog.show();
+            }
 //            AnimationHelper.clearAnimations();
             for (Object possibleAim : possibleAims) {
                 if (possibleAim instanceof GObj) {
@@ -181,6 +194,15 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                 }
             }
         }
+    }
+
+    private Stage createDialog() {
+        final Stage dialog = new Stage(StageStyle.TRANSPARENT);
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+        dialog.initModality(Modality.WINDOW_MODAL);
+        dialog.initOwner(scene.getWindow());
+        return dialog;
     }
 
     private XY_D getRectangleCenter(Rectangle rectangle) {
