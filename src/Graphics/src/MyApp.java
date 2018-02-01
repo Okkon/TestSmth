@@ -19,21 +19,21 @@ import utils.XY_D;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyApp extends Application implements GEventListener<GEvent> {
 
     //---------GRAPHIC------------
-    private final int windowWidth = 600;
-    private final int windowHeight = 600;
     private final Pane mainPane = new Pane();
     private final TextField actionNameField = new TextField("test text");
 
     //----------LOGIC--------
     private final GameCore gameCore = GameCore.getInstance();
-    private final HashMap<GameCell, CellVisualizer> cellToVisualizerMap = new HashMap<>();
-    private final HashMap<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
+    private final Map<GameCell, CellVisualizer> cellToVisualizerMap = new HashMap<>();
+    private final Map<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
 
     private VBox actionInfoBox;
+    private ObjectInfoPanel objectInfoPanel = new ObjectInfoPanel();
     private VBox aimsBox;
     private Label actionNameLabel = new Label();
     private Stage primaryStage;
@@ -62,6 +62,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         for (GAction action : gameCore.getActionList()) {
             final Button button = new Button(action.getClass().getSimpleName());
             button.setOnMouseClicked(event -> new ActionSelectionEvent(action).process());
+            button.setId("okb");
             children.add(button);
         }
 
@@ -73,7 +74,8 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         actionInfoBox.getChildren().addAll(
                 new Label("Selected Action:"),
                 actionNameLabel,
-                aimsBox
+                aimsBox,
+                objectInfoPanel
         );
 
         mainPane.setStyle("-fx-border-color: orange; -fx-border-width: 20; -fx-background-color: #333366;");
@@ -93,8 +95,8 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         final GBoard board = GBoard.getInstance();
         board.init(10, 8);
         for (GameCell cell : board.getAllCells()) {
-            int length = 60;
-            int tap = 5;
+            int length = GraphicConstants.CELL_SIZE;
+            int tap = GraphicConstants.CELL_TAP;
             final XY xy = cell.getXy();
             CellVisualizer cellVisualizer = new CellVisualizer(
                     tap + (length + tap) * xy.getX(),
@@ -115,7 +117,8 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         Pane bottomPane = new BottomPane();
         root.setBottom(bottomPane);
 
-        scene = new Scene(root, windowWidth, windowHeight);
+        scene = new Scene(root, GraphicConstants.WINDOW_WIDTH, GraphicConstants.WINDOW_HEIGHT);
+        scene.getStylesheets().add("style.css");
         primaryStage.setScene(scene);
 
         AbstractEvent.addSuperListener(this);
@@ -129,11 +132,12 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doBeforeEvent(GEvent event) {
-        System.out.println(event);
+//        System.out.println(event);
     }
 
     @Override
     public void doAfterEvent(GEvent event) {
+        System.out.println(event);
         if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
@@ -153,9 +157,14 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             final GameCell place = createObjEvent.getPlace();
             final Rectangle rectangle = cellToVisualizerMap.get(place);
             final Pane parent = (Pane) rectangle.getParent();
-            final XY_D center = getRectangleCenter(rectangle);
             final GObj obj = createObjEvent.getObj();
-            final UnitVisualizer visualizer = new UnitVisualizer(center.getX(), center.getY(), 20, obj);
+            GUnit unit = (GUnit) obj;
+            objectInfoPanel.setUnit(unit);
+            final UnitVisualizer visualizer = new UnitVisualizer(
+                    rectangle.getX(),
+                    rectangle.getY(),
+                    GraphicConstants.VISUALIZER_SIZE, unit
+            );
             objToVisualizerMap.put(obj, visualizer);
             parent.getChildren().add(visualizer);
             /*-------ShiftUnitEvent-----------*/
@@ -163,19 +172,17 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             ShiftObjectEvent shiftUnitEvent = (ShiftObjectEvent) event;
             final GameCell toCell = shiftUnitEvent.getToCell();
             final Rectangle rectangle = cellToVisualizerMap.get(toCell);
-            final XY_D center = getRectangleCenter(rectangle);
             final UnitVisualizer visualizer = objToVisualizerMap.get(shiftUnitEvent.getObj());
-            visualizer.setCenterX(center.getX());
-            visualizer.setCenterY(center.getY());
-            /*---------------AimSelectionEvent---------------------*/
-        } else if (event instanceof AbstractAction.AimSelectionEvent) {
-            AbstractAction.AimSelectionEvent aimSelectionEvent = (AbstractAction.AimSelectionEvent) event;
-            ActionAim requirement = aimSelectionEvent.getAimRequirement();
+            visualizer.moveTo(getRectangleCoords(rectangle));
+            /*---------------AimChoseEvent---------------------*/
+        } else if (event instanceof AbstractAction.AimChoseEvent) {
+            AbstractAction.AimChoseEvent aimChoseEvent = (AbstractAction.AimChoseEvent) event;
+            ActionAim requirement = aimChoseEvent.getAimRequirement();
             final List possibleAims = gameCore.findAims(requirement);
             if (requirement.getFilters().get(0).equals(ClassFilter.getInstance(UnitType.class))) {
                 final Stage dialog = createDialog();
                 dialog.initModality(Modality.NONE);
-                UnitTypeSelector unitTypeSelector = new UnitTypeSelector(BaseTypes.getTypes(), dialog, aimSelectionEvent.getAction());
+                UnitTypeSelector unitTypeSelector = new UnitTypeSelector(BaseTypes.getTypes(), dialog, aimChoseEvent.getAction());
                 //TODO: add selector close on selectActionEvent
                 dialog.show();
             }
@@ -184,16 +191,20 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                 if (possibleAim instanceof GObj) {
                     GObj aim = (GObj) possibleAim;
                     final UnitVisualizer visualizer = objToVisualizerMap.get(aim);
-                    visualizer.showSelectionPossibility(aimSelectionEvent.getAction());
+                    visualizer.showSelectionPossibility(aimChoseEvent.getAction());
                     AnimationHelper.addAnimatedVisualizer(visualizer);
                 } else if (possibleAim instanceof GameCell) {
                     GameCell aim = (GameCell) possibleAim;
                     final CellVisualizer visualizer = cellToVisualizerMap.get(aim);
-                    visualizer.showSelectionPossibility(aimSelectionEvent.getAction());
+                    visualizer.showSelectionPossibility(aimChoseEvent.getAction());
                     AnimationHelper.addAnimatedVisualizer(visualizer);
                 }
             }
         }
+    }
+
+    private XY_D getRectangleCoords(Rectangle rectangle) {
+        return new XY_D(rectangle.getX(), rectangle.getY());
     }
 
     private Stage createDialog() {

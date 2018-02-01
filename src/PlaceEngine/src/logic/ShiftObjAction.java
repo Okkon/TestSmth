@@ -2,7 +2,7 @@ package logic;
 
 import static tools.PEConst.*;
 
-public class ShiftObjAction<T> extends AbstractAction<T> {
+public class ShiftObjAction extends AbstractAction {
     private static ShiftObjAction INSTANCE = new ShiftObjAction();
 
     private ShiftObjAction() {

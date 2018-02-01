@@ -9,6 +9,11 @@ public class ActionSelectionEvent extends AbstractEvent {
     }
 
     @Override
+    public String toString() {
+        return String.format("Action selected: %s", action);
+    }
+
+    @Override
     protected void perform() {
         GameCore.getInstance().setSelectedAction(action);
         action.aimSelectionStep();

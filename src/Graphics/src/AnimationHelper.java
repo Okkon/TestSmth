@@ -1,7 +1,9 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
@@ -11,11 +13,25 @@ public class AnimationHelper {
 
     private static final HashSet<Visualizer> visualizers = new HashSet<>();
 
-    public static Timeline createColorAnimation(Shape shape, Color color) {
+    public static Timeline createStrokeAnimation(Shape shape, Color color) {
+        return createFrameAnimation(
+                shape.strokeProperty(),
+                color
+        );
+    }
+
+    public static Timeline createFillAnimation(Shape shape, Color color) {
+        return createFrameAnimation(
+                shape.fillProperty(),
+                color
+        );
+    }
+
+    private static Timeline createFrameAnimation(ObjectProperty<Paint> property, Color color) {
         final Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.setAutoReverse(true);
-        final KeyValue kv = new KeyValue(shape.fillProperty(), color);
+        final KeyValue kv = new KeyValue(property, color);
         final KeyFrame kf = new KeyFrame(Duration.millis(1500), kv);
         timeline.getKeyFrames().add(kf);
         return timeline;

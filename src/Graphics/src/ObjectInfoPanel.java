@@ -7,10 +7,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import logic.ActionSelectionEvent;
-import logic.GMod;
-import logic.Skill;
-import logic.UnitType;
+import logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,7 @@ public class ObjectInfoPanel extends GridPane {
         getStyleClass().add("unitPanel");
     }
 
-    public void setObj(UnitType unitType) {
+    public void setObjType(UnitType unitType) {
         getChildren().clear();
         setVgap(5);
         if (unitType == null) {
@@ -39,11 +36,11 @@ public class ObjectInfoPanel extends GridPane {
         textArea.setPrefWidth(120);
 //        UIHelper.fixHeight(textArea, 60);
 
-        ListView<GMod> list = new ListView<GMod>();
+        ListView<GMod> modListView = new ListView<GMod>();
         ObservableList<GMod> items = FXCollections.observableArrayList(unitType.getMods());
-        list.setItems(items);
-        list.setMaxHeight(75);
-        list.setCellFactory(new Callback<ListView<GMod>, ListCell<GMod>>() {
+        modListView.setItems(items);
+        modListView.setMaxHeight(75);
+        modListView.setCellFactory(new Callback<ListView<GMod>, ListCell<GMod>>() {
             @Override
             public ListCell<GMod> call(ListView<GMod> gModListView) {
                 return new ListCell<GMod>() {
@@ -64,7 +61,7 @@ public class ObjectInfoPanel extends GridPane {
             }
         });
 
-        HBox hBox = new HBox(10);
+        HBox skillsBox = new HBox(10);
 
 //        final boolean belongsToActivePlayer = GameModel.MODEL.getActivePlayer().isOwnerFor(unit);
         final List<Skill> unitSkills = new ArrayList<Skill>();
@@ -89,7 +86,7 @@ public class ObjectInfoPanel extends GridPane {
                 button.setOnAction(actionEvent -> GameModel.MODEL.setAction(skill));
             }*/
             button.setOnAction(actionEvent -> new ActionSelectionEvent(skill).process());
-            hBox.getChildren().add(button);
+            skillsBox.getChildren().add(button);
         }
 
         final Image image = ImageHelper.getImage(unitType);
@@ -105,8 +102,8 @@ public class ObjectInfoPanel extends GridPane {
         add(new Label(String.valueOf(unitType.getMaxHp())), 2, 1);
         add(new Label("MP:"), 1, 2);
         add(new Label(String.valueOf(unitType.getMaxMp())), 2, 2);
-        add(hBox, 0, 3, REMAINING, 1);
-        add(list, 0, 4, REMAINING, 1);
+        add(skillsBox, 1, 3, REMAINING, 1);
+        add(modListView, 1, 4, REMAINING, 1);
         add(textArea, 0, 5, REMAINING, 1);
 
     }
@@ -118,5 +115,9 @@ public class ObjectInfoPanel extends GridPane {
             image = new Image("file:res/img/skills/unknown.jpg");
         }
         return image;
+    }
+
+    public void setUnit(GUnit unit) {
+        setObjType(unit.getType());
     }
 }

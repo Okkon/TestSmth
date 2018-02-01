@@ -3,19 +3,19 @@ package logic;
 public class ShiftObjectEvent extends AbstractEvent {
     private GameCell toCell;
     private GameCell fromCell;
-    private GObj unit;
+    private GObj obj;
 
-    public ShiftObjectEvent(GameCell toCell, GObj unit) {
-        this.unit = unit;
+    public ShiftObjectEvent(GameCell toCell, GObj obj) {
+        this.obj = obj;
         this.toCell = toCell;
-        this.fromCell = unit.getPlace();
+        this.fromCell = obj.getPlace();
     }
 
     @Override
     protected void perform() {
         fromCell.setObj(null);
-        unit.setPlace(toCell);
-        toCell.setObj(unit);
+        obj.setPlace(toCell);
+        toCell.setObj(obj);
     }
 
     public GameCell getToCell() {
@@ -23,6 +23,11 @@ public class ShiftObjectEvent extends AbstractEvent {
     }
 
     public GObj getObj() {
-        return unit;
+        return obj;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s is shifted from %s to %s", obj, fromCell, toCell);
     }
 }

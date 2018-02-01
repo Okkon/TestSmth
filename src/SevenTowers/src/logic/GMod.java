@@ -28,4 +28,14 @@ public abstract class GMod<T extends GEvent, H extends GObj> implements GEventLi
     public String getName() {
         return getClass().getSimpleName();
     }
+
+    @Override
+    public void doBeforeEvent(T event) {
+        //DO NOTHING
+    }
+
+    @Override
+    public void doAfterEvent(T event) {
+        //DO NOTHING
+    }
 }

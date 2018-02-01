@@ -4,30 +4,30 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ActionAim<T> {
+public class ActionAim {
     private String name;
-    private List<GFilter<T>> filters;
-    private T selectedAim;
+    private List<GFilter> filters;
+    private Object selectedAim;
 
     @Override
     public String toString() {
         return name + " : " + filters.toString();
     }
 
-    public ActionAim(String aimName, GFilter<T>[] filters) {
+    public ActionAim(String aimName, GFilter[] filters) {
         this.name = aimName;
         this.filters = Arrays.asList(filters);
     }
 
-    public T getSelectedAim() {
-        return selectedAim;
+    public <T> T getSelectedAim() {
+        return (T) selectedAim;
     }
 
-    public List<GFilter<T>> getFilters() {
+    public List<GFilter> getFilters() {
         return filters;
     }
 
     public void setSelectedAim(Object selectedAim) {
-        this.selectedAim = (T) selectedAim;
+        this.selectedAim = selectedAim;
     }
 }

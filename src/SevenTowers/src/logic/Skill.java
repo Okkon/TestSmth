@@ -1,6 +1,6 @@
 package logic;
 
-public abstract class Skill<T> extends AbstractAction<T> {
+public abstract class Skill extends AbstractAction {
     private GUnit actor;
     private boolean endsUnitTurn;
 

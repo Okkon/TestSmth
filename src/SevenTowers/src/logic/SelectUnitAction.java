@@ -1,6 +1,6 @@
 package logic;
 
-public class SelectUnitAction<T extends GUnit> extends AbstractAction<T> {
+public class SelectUnitAction<T extends GUnit> extends AbstractAction {
     private static SelectUnitAction INSTANCE = new SelectUnitAction();
 
     private SelectUnitAction() {

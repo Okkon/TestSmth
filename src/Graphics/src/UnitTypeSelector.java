@@ -9,6 +9,7 @@ import javafx.scene.layout.HBoxBuilder;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logic.AbstractAction;
+import logic.Player;
 import logic.UnitType;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class UnitTypeSelector {
 
     public UnitTypeSelector(final List<UnitType> types, final Stage dialog, AbstractAction action) {
         this.dialog = dialog;
-        dialog.setX(320);
-        dialog.setY(0);
+        dialog.setX(GraphicConstants.DIALOG_TYPE_SELECTOR_X);
+        dialog.setY(GraphicConstants.DIALOG_TYPE_SELECTOR_Y);
 
         GridPane pane = new GridPane();
         pane.setGridLinesVisible(true);
@@ -34,17 +35,18 @@ public class UnitTypeSelector {
         final int unitPaneWidth = 3;
         infoPanel = new ObjectInfoPanel();
         PlayerInfoPanel playerPanel = new PlayerInfoPanel();
-        playerPanel.setPlayer(new Player());
+        playerPanel.setPlayer(Player.NEUTRAL);
         for (int i = 0; i < types.size(); i++) {
             final UnitType unitType = types.get(i);
             final Image image = ImageHelper.getImage(unitType);
             final ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(64);
-            imageView.setFitHeight(64);
+            int imageViewSide = GraphicConstants.DIALOG_TYPE_SELECTOR_IMAGE_VIEW_SIDE;
+            imageView.setFitWidth(imageViewSide);
+            imageView.setFitHeight(imageViewSide);
             imageView.setPreserveRatio(true);
             imageView.setOnMousePressed(mouseEvent -> {
                 selectedUnitType = unitType;
-                infoPanel.setObj(unitType);
+                infoPanel.setObjType(unitType);
                 if (lastSelected != null) {
                     lastSelected.setStyle("-fx-opacity: 1;");
                 }
@@ -58,7 +60,7 @@ public class UnitTypeSelector {
 
             pane.add(box, i % unitPaneWidth, i / unitPaneWidth);
         }
-        infoPanel.setObj(types.get(0));
+        infoPanel.setObjType(types.get(0));
         pane.add(playerPanel, 0, types.size() / unitPaneWidth + 1, unitPaneWidth, GridPane.REMAINING);
         pane.add(infoPanel, unitPaneWidth, 0, GridPane.REMAINING, GridPane.REMAINING);
         final Label label = new Label();

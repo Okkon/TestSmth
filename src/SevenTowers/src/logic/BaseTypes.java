@@ -1,17 +1,17 @@
 package logic;
 
+import logic.mods.Armor;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Олег on 31.01.2018.
- */
 public enum BaseTypes {
     Footman(
             "Footman",
             6,
             21,
-            new ArrayList<>()
+            new ArrayList<>(),
+            new Armor(2)
     ),
     Inquisitor(
             "Inquisitor",
@@ -41,7 +41,7 @@ public enum BaseTypes {
     private UnitType unitType;
 
     BaseTypes(String typeName, int hp, int mp, List<Skill> skills, GMod... mods) {
-        this.unitType = new UnitType(typeName, mp, hp, skills);
+        this.unitType = new UnitType(typeName, mp, hp, skills, mods);
     }
 
     public static List<UnitType> getTypes() {

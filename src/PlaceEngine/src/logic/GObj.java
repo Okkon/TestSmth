@@ -21,4 +21,6 @@ public class GObj implements PlaceHaving, OwnerHaving {
     public void setPlace(GameCell place) {
         this.place = place;
     }
+
+
 }

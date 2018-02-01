@@ -10,6 +10,11 @@ public class CreateObjEvent extends AbstractEvent {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s created in %s", obj, place);
+    }
+
+    @Override
     protected void perform() {
         obj.setPlace(place);
         place.setObj(obj);

@@ -4,11 +4,10 @@ import javafx.scene.shape.Rectangle;
 import logic.AbstractAction;
 import logic.GameCell;
 import logic.GameCore;
-import logic.PlaceHaving;
 
 public class CellVisualizer extends Rectangle implements Visualizer {
-    private final Color baseColor = Color.DARKGRAY;
-    private final Color baseStrokeColor = Color.GRAY;
+    private final Color baseColor = GraphicConstants.CELL_COLOR;
+    private final Color baseStrokeColor = GraphicConstants.CELL_COLOR_STROKE;
     private Timeline timeline;
 
     public CellVisualizer(int x, int y, int width, int height, GameCell cell) {
@@ -29,10 +28,10 @@ public class CellVisualizer extends Rectangle implements Visualizer {
     }
 
     @Override
-    public void showSelectionPossibility(AbstractAction<? extends PlaceHaving> action) {
+    public void showSelectionPossibility(AbstractAction action) {
         setDefaults();
         if (action != null) {
-            timeline = AnimationHelper.createColorAnimation(this, baseColor.brighter());
+            timeline = AnimationHelper.createFillAnimation(this, baseColor.brighter());
             timeline.play();
         }
     }

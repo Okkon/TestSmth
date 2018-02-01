@@ -11,6 +11,6 @@ public interface GAction<T> {
 
     void tryToSelect(Object obj);
 
-    List<ActionAim<T>> getAims();
+    List<ActionAim> getAims();
 
 }

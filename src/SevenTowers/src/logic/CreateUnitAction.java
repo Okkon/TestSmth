@@ -2,7 +2,7 @@ package logic;
 
 import tools.PEConst;
 
-public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
+public class CreateUnitAction<T extends GameCell> extends AbstractAction {
     private static CreateUnitAction INSTANCE;
 
     private CreateUnitAction() {
@@ -23,6 +23,6 @@ public class CreateUnitAction<T extends GameCell> extends AbstractAction<T> {
 
     @Override
     public void doAction() {
-        new CreateObjEvent((getAim()), new GUnit(BaseTypes.Footman.getType())).process();
+        new CreateObjEvent((getAim()), new GUnit(getAims().get(0).getSelectedAim())).process();
     }
 }

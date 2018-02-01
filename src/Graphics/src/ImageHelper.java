@@ -1,4 +1,5 @@
 import javafx.scene.image.Image;
+import logic.Player;
 import logic.UnitType;
 
 public class ImageHelper {

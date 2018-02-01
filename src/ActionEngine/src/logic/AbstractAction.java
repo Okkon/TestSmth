@@ -3,23 +3,22 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
-// T - aim class
-public abstract class AbstractAction<T> implements GAction<T> {
-    private List<ActionAim<T>> actionAims = new ArrayList<>();
+public abstract class AbstractAction implements GAction {
+    private List<ActionAim> actionAims = new ArrayList<>();
 
     protected AbstractAction() {
         init();
     }
 
-    protected void addAimFilter(String aimName, GFilter<T>... filters) {
-        actionAims.add(new ActionAim<T>(aimName, filters));
+    protected void addAimFilter(String aimName, GFilter... filters) {
+        actionAims.add(new ActionAim(aimName, filters));
     }
 
     public abstract void init();
 
     @Override
     public void cancel() {
-        ActionAim<T> lastSelectedAim = getLastSelectedAim();
+        ActionAim lastSelectedAim = getLastSelectedAim();
         if (lastSelectedAim != null) {
             lastSelectedAim.setSelectedAim(null);
             aimSelectionStep();
@@ -35,7 +34,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
         return null;
     }
 
-    private ActionAim<T> getLastSelectedAim() {
+    private ActionAim getLastSelectedAim() {
         for (int i = actionAims.size() - 1; i >= 0; i--) {
             if (actionAims.get(i).getSelectedAim() != null) {
                 return actionAims.get(i);
@@ -50,7 +49,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
             perform();
         } else {
             setUpFilters();
-            new AimSelectionEvent(this).process();
+            new AimChoseEvent(this).process();
         }
     }
 
@@ -77,7 +76,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
     }
 
     @Override
-    public List<ActionAim<T>> getAims() {
+    public List<ActionAim> getAims() {
         return actionAims;
     }
 
@@ -86,7 +85,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
     }
 
     private void clearAims() {
-        for (ActionAim<T> actionAim : actionAims) {
+        for (ActionAim actionAim : actionAims) {
             actionAim.setSelectedAim(null);
         }
     }
@@ -103,14 +102,19 @@ public abstract class AbstractAction<T> implements GAction<T> {
         return true;
     }
 
-    public T getAim() {
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
+    public <T> T getAim() {
         if (getLastSelectedAim() != null) {
             return getLastSelectedAim().getSelectedAim();
         }
         return null;
     }
 
-    public T getAim(int index) {
+    public <T> T getAim(int index) {
         return actionAims.get(index).getSelectedAim();
     }
 
@@ -119,7 +123,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
     }
 
 
-    public static class AimSelectionEvent extends AbstractEvent {
+    public static class AimChoseEvent extends AbstractEvent {
         private AbstractAction action;
         private ActionAim aim;
 
@@ -127,7 +131,7 @@ public abstract class AbstractAction<T> implements GAction<T> {
             return aim;
         }
 
-        public AimSelectionEvent(AbstractAction action) {
+        public AimChoseEvent(AbstractAction action) {
             this.action = action;
         }
 
@@ -138,6 +142,11 @@ public abstract class AbstractAction<T> implements GAction<T> {
 
         public AbstractAction getAction() {
             return action;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Aim to choose: %s", aim);
         }
     }
 
