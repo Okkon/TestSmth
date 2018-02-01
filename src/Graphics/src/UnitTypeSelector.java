@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class UnitTypeSelector {
-    private final ObjectInfoPanel infoPanel;
+    private final UnitInfoPanel infoPanel;
     private UnitType selectedUnitType;
     private Stage dialog;
     private ImageView lastSelected;
@@ -33,7 +33,7 @@ public class UnitTypeSelector {
         pane.setPadding(new Insets(5, 10, 5, 10));
         pane.setStyle("-fx-background-color: ivory;");
         final int unitPaneWidth = 3;
-        infoPanel = new ObjectInfoPanel();
+        infoPanel = new UnitInfoPanel();
         PlayerInfoPanel playerPanel = new PlayerInfoPanel();
         playerPanel.setPlayer(Player.NEUTRAL);
         for (int i = 0; i < types.size(); i++) {

@@ -18,6 +18,7 @@ public class UnitVisualizer extends StackPane implements Visualizer {
     private final GUnit unit;
     private Timeline timeline;
     private final Label hpLabel = new Label();
+    private UnitInfoPanel unitPanel;
 
     public UnitVisualizer(double x, double y, int r, GUnit unit) {
         this.unit = unit;
@@ -25,14 +26,16 @@ public class UnitVisualizer extends StackPane implements Visualizer {
         circle = new Circle(0, 0, r);
         circle.setFill(new ImagePattern(image, 0, 0, 1, 1, true));
         circle.setStrokeWidth(GraphicConstants.VISUALIZER_BORDER_SIZE);
-        circle.setOnMouseClicked(o -> GameCore.getInstance().press(unit));
+        circle.setOnMouseClicked(o -> {
+            unitPanel.setUnit(this.unit);
+            GameCore.getInstance().press(unit);
+        });
 
         hpLabel.setText(String.valueOf(unit.getHp()));
-        hpLabel.setPrefSize(10, 10);
         hpLabel.setTranslateX(25);
         hpLabel.setTranslateY(25);
 //        hpLabel.setTextFill(Color.INDIANRED);
-        hpLabel.setId("hplabel-");
+        hpLabel.setId("hplabel");
 
         getChildren().addAll(circle, hpLabel);
         setLayoutX(x);
@@ -78,4 +81,17 @@ public class UnitVisualizer extends StackPane implements Visualizer {
         setLayoutX(center.getX());
         setLayoutY(center.getY());
     }
+
+    public void setUnitPanel(UnitInfoPanel unitPanel) {
+        this.unitPanel = unitPanel;
+    }
+
+    public void setHp(int hp) {
+        hpLabel.setText(String.valueOf(hp));
+    }
+
+    public void die() {
+        ((Pane) getParent()).getChildren().remove(this);
+    }
 }
+

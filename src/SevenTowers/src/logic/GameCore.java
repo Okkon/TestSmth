@@ -1,5 +1,7 @@
 package logic;
 
+import logic.actions.CreateUnitAction;
+import logic.actions.SelectUnitAction;
 import tools.PEConst;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class GameCore {
     //--------Fields------------------
     private List<GAction> actionList = Arrays.asList(CreateUnitAction.getInstance(), SelectUnitAction.getInstance(), ShiftObjAction.getInstance());
     private GAction selectedAction = actionList.get(0);
+    private Phase phase;
 
     //-----------Logic-----------------------------------------
     public void press(PlaceHaving cell) {
@@ -42,7 +45,7 @@ public class GameCore {
         this.selectedAction = selectedAction;
     }
 
-    public List findAims(ActionAim actionAimRequirements) {
+    public List findAims(ActionAimRequirement actionAimRequirements) {
         List<GFilter> filters = actionAimRequirements.getFilters();
         ArrayList<Object> possibleAims = new ArrayList<>();
         GFilter mainFilter = filters.get(0);

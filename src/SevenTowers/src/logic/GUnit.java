@@ -1,5 +1,7 @@
 package logic;
 
+import logic.attack.AttackProps;
+
 import java.util.List;
 
 public class GUnit extends GObj {
@@ -26,11 +28,10 @@ public class GUnit extends GObj {
         return shiftObjAction;
     }
 
-    public void loseMp(int k) {
-        currentMp -= k;
-        if (currentMp < 0) {
-            currentMp = 0;
-        }
+    public int loseMp(int k) {
+        int lostMp = Math.min(k, currentMp);
+        currentMp -= lostMp;
+        return lostMp;
     }
 
     public int getMp() {
@@ -42,11 +43,10 @@ public class GUnit extends GObj {
         return String.format("%s(id=%s)", unitType.getTypeName(), id);
     }
 
-    public void loseHp(HitDamage damage) {
-        currentHp -= damage.getTotalDamage();
-        if (currentHp <= 0) {
-            currentHp = 0;
-        }
+    public int loseHp(AttackProps damage) {
+        int lostHp = Math.min(damage.getTotalDamage(), currentHp);
+        currentHp -= lostHp;
+        return lostHp;
     }
 
     public UnitType getType() {

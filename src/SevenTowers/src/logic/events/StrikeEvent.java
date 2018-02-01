@@ -1,4 +1,9 @@
-package logic;
+package logic.events;
+
+import logic.AbstractEvent;
+import logic.GUnit;
+import logic.PlaceHaving;
+import logic.attack.AttackProps;
 
 public class StrikeEvent extends AbstractEvent {
     private final GUnit actor;
@@ -15,7 +20,13 @@ public class StrikeEvent extends AbstractEvent {
     protected void perform() {
         if (aim instanceof GUnit) {
             GUnit unit = (GUnit) aim;
+            attackProps.setAim(unit);
             new UnitHitEvent(unit, attackProps.generateHit()).process();
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s strikes on %s. Damage = %s", actor, aim, attackProps);
     }
 }

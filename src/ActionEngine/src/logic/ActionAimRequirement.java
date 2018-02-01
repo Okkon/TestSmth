@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ActionAim {
+public class ActionAimRequirement {
     private String name;
     private List<GFilter> filters;
     private Object selectedAim;
@@ -14,7 +14,7 @@ public class ActionAim {
         return name + " : " + filters.toString();
     }
 
-    public ActionAim(String aimName, GFilter[] filters) {
+    public ActionAimRequirement(String aimName, GFilter[] filters) {
         this.name = aimName;
         this.filters = Arrays.asList(filters);
     }

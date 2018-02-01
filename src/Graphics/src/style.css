@@ -1,6 +1,8 @@
-#okb {
-    -fx-padding: 3 10 3 10;
+#hplabel {
+    -fx-border-radius: 100;
     -fx-background-color: linear-gradient(#ffebcd, #deb887);
+    -fx-border-color: orange;
+    -fx-font: bold 15pt
 }
 
 .label{
@@ -8,7 +10,6 @@
 }
 
 .root{
-    -fx-font-size: 12pt;
     -fx-font: bold 12pt "Courier New";
 }
 

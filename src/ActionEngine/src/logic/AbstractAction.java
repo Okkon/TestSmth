@@ -4,40 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractAction implements GAction {
-    private List<ActionAim> actionAims = new ArrayList<>();
+    private List<ActionAimRequirement> actionAimRequirements = new ArrayList<>();
 
     protected AbstractAction() {
         init();
     }
 
     protected void addAimFilter(String aimName, GFilter... filters) {
-        actionAims.add(new ActionAim(aimName, filters));
+        actionAimRequirements.add(new ActionAimRequirement(aimName, filters));
     }
 
     public abstract void init();
 
     @Override
     public void cancel() {
-        ActionAim lastSelectedAim = getLastSelectedAim();
+        ActionAimRequirement lastSelectedAim = getLastSelectedAim();
         if (lastSelectedAim != null) {
             lastSelectedAim.setSelectedAim(null);
             aimSelectionStep();
         }
     }
 
-    private ActionAim getAimToSelect() {
-        for (ActionAim actionAim : actionAims) {
-            if (actionAim.getSelectedAim() == null) {
-                return actionAim;
+    private ActionAimRequirement getAimToSelect() {
+        for (ActionAimRequirement actionAimRequirement : actionAimRequirements) {
+            if (actionAimRequirement.getSelectedAim() == null) {
+                return actionAimRequirement;
             }
         }
         return null;
     }
 
-    private ActionAim getLastSelectedAim() {
-        for (int i = actionAims.size() - 1; i >= 0; i--) {
-            if (actionAims.get(i).getSelectedAim() != null) {
-                return actionAims.get(i);
+    private ActionAimRequirement getLastSelectedAim() {
+        for (int i = actionAimRequirements.size() - 1; i >= 0; i--) {
+            if (actionAimRequirements.get(i).getSelectedAim() != null) {
+                return actionAimRequirements.get(i);
             }
         }
         return null;
@@ -54,7 +54,7 @@ public abstract class AbstractAction implements GAction {
     }
 
     protected void setUpFilters() {
-        //do nothing
+        //do nothing - override in successors
     }
 
     protected boolean allAimsSelected() {
@@ -76,8 +76,8 @@ public abstract class AbstractAction implements GAction {
     }
 
     @Override
-    public List<ActionAim> getAims() {
-        return actionAims;
+    public List<ActionAimRequirement> getAims() {
+        return actionAimRequirements;
     }
 
     protected void afterPerform() {
@@ -85,8 +85,8 @@ public abstract class AbstractAction implements GAction {
     }
 
     private void clearAims() {
-        for (ActionAim actionAim : actionAims) {
-            actionAim.setSelectedAim(null);
+        for (ActionAimRequirement actionAimRequirement : actionAimRequirements) {
+            actionAimRequirement.setSelectedAim(null);
         }
     }
 
@@ -108,14 +108,15 @@ public abstract class AbstractAction implements GAction {
     }
 
     public <T> T getAim() {
-        if (getLastSelectedAim() != null) {
-            return getLastSelectedAim().getSelectedAim();
+        ActionAimRequirement lastSelectedAim = getLastSelectedAim();
+        if (lastSelectedAim != null) {
+            return lastSelectedAim.getSelectedAim();
         }
         return null;
     }
 
     public <T> T getAim(int index) {
-        return actionAims.get(index).getSelectedAim();
+        return actionAimRequirements.get(index).getSelectedAim();
     }
 
     public String getDescription() {
@@ -125,9 +126,9 @@ public abstract class AbstractAction implements GAction {
 
     public static class AimChoseEvent extends AbstractEvent {
         private AbstractAction action;
-        private ActionAim aim;
+        private ActionAimRequirement aim;
 
-        public ActionAim getAimRequirement() {
+        public ActionAimRequirement getAimRequirement() {
             return aim;
         }
 

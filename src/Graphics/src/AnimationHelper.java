@@ -10,7 +10,6 @@ import javafx.util.Duration;
 import java.util.HashSet;
 
 public class AnimationHelper {
-
     private static final HashSet<Visualizer> visualizers = new HashSet<>();
 
     public static Timeline createStrokeAnimation(Shape shape, Color color) {

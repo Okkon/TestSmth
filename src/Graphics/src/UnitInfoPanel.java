@@ -7,14 +7,20 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import logic.*;
+import logic.GMod;
+import logic.GUnit;
+import logic.Skill;
+import logic.UnitType;
+import logic.events.ActionSelectionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectInfoPanel extends GridPane {
+public class UnitInfoPanel extends GridPane {
 
-    public ObjectInfoPanel() {
+    private GUnit unit;
+
+    public UnitInfoPanel() {
         super();
         getStyleClass().add("unitPanel");
     }
@@ -27,14 +33,13 @@ public class ObjectInfoPanel extends GridPane {
             return;
         }
         setVisible(true);
-        setGridLinesVisible(true);
+//        setGridLinesVisible(true);
 
         final TextArea textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setText("TYPE DESCRIPTION OF " + unitType.getTypeName());
         textArea.setEditable(false);
         textArea.setPrefWidth(120);
-//        UIHelper.fixHeight(textArea, 60);
 
         ListView<GMod> modListView = new ListView<GMod>();
         ObservableList<GMod> items = FXCollections.observableArrayList(unitType.getMods());
@@ -76,7 +81,6 @@ public class ObjectInfoPanel extends GridPane {
             final int buttonSize = 55;
             imageView.setFitWidth(buttonSize);
             button.setGraphic(imageView);
-//            UIHelper.fixSize(button, buttonSize);
             button.setOnMousePressed(mouseEvent -> {
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
                     textArea.setText(skill.getDescription());
@@ -85,7 +89,10 @@ public class ObjectInfoPanel extends GridPane {
             /*if (belongsToActivePlayer && unit.getPlace() != null) {
                 button.setOnAction(actionEvent -> GameModel.MODEL.setAction(skill));
             }*/
-            button.setOnAction(actionEvent -> new ActionSelectionEvent(skill).process());
+            button.setOnAction(actionEvent -> {
+                skill.setActor(unit);
+                new ActionSelectionEvent(skill).process();
+            });
             skillsBox.getChildren().add(button);
         }
 
@@ -118,6 +125,11 @@ public class ObjectInfoPanel extends GridPane {
     }
 
     public void setUnit(GUnit unit) {
+        setUnitLocal(unit);
         setObjType(unit.getType());
+    }
+
+    public void setUnitLocal(GUnit unitLocal) {
+        this.unit = unitLocal;
     }
 }

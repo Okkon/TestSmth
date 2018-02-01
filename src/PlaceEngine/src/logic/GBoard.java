@@ -31,11 +31,11 @@ public class GBoard {
                 GameCell rightCell = board.get(xy.changeX(1));
                 GameCell bottomCell = board.get(xy.changeY(1));
                 GameCell diagonalCell = board.get(xy.changeX(1).changeY(1));
-                if (board.get(rightCell) != null) {
+                if (rightCell != null) {
                     cell.link(rightCell, XY.straightLength);
-                } else if (board.get(bottomCell) != null) {
+                } else if (bottomCell != null) {
                     cell.link(bottomCell, XY.straightLength);
-                } else if (board.get(diagonalCell) != null) {
+                } else if (diagonalCell != null) {
                     cell.link(diagonalCell, XY.diagonalLength);
                 }
             }
@@ -76,6 +76,10 @@ public class GBoard {
     }
 
     public void addUnit(GObj unit) {
+        unitList.add(unit);
+    }
+
+    public void removeUnit(GObj unit) {
         unitList.add(unit);
     }
 

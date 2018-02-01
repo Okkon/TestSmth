@@ -1,5 +1,7 @@
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
+import javafx.scene.shape.Rectangle;
+import utils.XY_D;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +34,14 @@ public class GraphicsHelper {
         }
         transition.play();
         transitions.clear();
+    }
+
+
+    private XY_D getRectangleCenter(Rectangle rectangle) {
+        final double minX = rectangle.getBoundsInParent().getMinX();
+        final double minY = rectangle.getBoundsInParent().getMinY();
+        final double maxX = rectangle.getBoundsInParent().getMaxX();
+        final double maxY = rectangle.getBoundsInParent().getMaxY();
+        return new XY_D((minX + maxX) / 2, (minY + maxY) / 2);
     }
 }

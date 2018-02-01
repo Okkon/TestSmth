@@ -14,6 +14,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.*;
+import logic.events.ActionSelectionEvent;
+import logic.events.CreateObjEvent;
+import logic.events.UnitDeathEvent;
+import logic.events.UnitLoseHpEvent;
 import utils.XY;
 import utils.XY_D;
 
@@ -33,7 +37,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
     private final Map<GObj, UnitVisualizer> objToVisualizerMap = new HashMap<>();
 
     private VBox actionInfoBox;
-    private ObjectInfoPanel objectInfoPanel = new ObjectInfoPanel();
+    private UnitInfoPanel unitInfoPanel = new UnitInfoPanel();
     private VBox aimsBox;
     private Label actionNameLabel = new Label();
     private Stage primaryStage;
@@ -75,7 +79,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                 new Label("Selected Action:"),
                 actionNameLabel,
                 aimsBox,
-                objectInfoPanel
+                unitInfoPanel
         );
 
         mainPane.setStyle("-fx-border-color: orange; -fx-border-width: 20; -fx-background-color: #333366;");
@@ -142,16 +146,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             actionNameField.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
             actionNameLabel.setText(actionSelectionEvent.getAction().getClass().getSimpleName());
-            List<ActionAim> aims = ((ActionSelectionEvent) event).getAction().getAims();
+            List<ActionAimRequirement> aims = ((ActionSelectionEvent) event).getAction().getAims();
             ObservableList<Node> children = aimsBox.getChildren();
             children.clear();
-            for (ActionAim aim : aims) {
+            for (ActionAimRequirement aim : aims) {
                 children.add(new Label(aim.toString()));
             }
         } else {
             AnimationHelper.clearAnimations();
         }
-        /*---------------logic.CreateObjEvent---------------------*/
+        /*---------------logic.events.CreateObjEvent---------------------*/
         if (event instanceof CreateObjEvent) {
             CreateObjEvent createObjEvent = (CreateObjEvent) event;
             final GameCell place = createObjEvent.getPlace();
@@ -159,14 +163,27 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             final Pane parent = (Pane) rectangle.getParent();
             final GObj obj = createObjEvent.getObj();
             GUnit unit = (GUnit) obj;
-            objectInfoPanel.setUnit(unit);
+            unitInfoPanel.setUnit(unit);
             final UnitVisualizer visualizer = new UnitVisualizer(
                     rectangle.getX(),
                     rectangle.getY(),
                     GraphicConstants.VISUALIZER_SIZE, unit
             );
             objToVisualizerMap.put(obj, visualizer);
+            visualizer.setUnitPanel(unitInfoPanel);
             parent.getChildren().add(visualizer);
+            /*-------UnitLoseHpEvent-----------*/
+        } else if (event instanceof UnitLoseHpEvent) {
+            UnitLoseHpEvent unitLoseHpEvent = (UnitLoseHpEvent) event;
+            GUnit unit = unitLoseHpEvent.getUnit();
+            UnitVisualizer unitVisualizer = objToVisualizerMap.get(unit);
+            unitVisualizer.setHp(unitLoseHpEvent.getRemainedHp());
+            /*-------UnitDeathEvent-----------*/
+        } else if (event instanceof UnitDeathEvent) {
+            UnitDeathEvent unitDeathEvent = (UnitDeathEvent) event;
+            GUnit unit = unitDeathEvent.getUnit();
+            UnitVisualizer unitVisualizer = objToVisualizerMap.get(unit);
+            unitVisualizer.die();
             /*-------ShiftUnitEvent-----------*/
         } else if (event instanceof ShiftObjectEvent) {
             ShiftObjectEvent shiftUnitEvent = (ShiftObjectEvent) event;
@@ -177,7 +194,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             /*---------------AimChoseEvent---------------------*/
         } else if (event instanceof AbstractAction.AimChoseEvent) {
             AbstractAction.AimChoseEvent aimChoseEvent = (AbstractAction.AimChoseEvent) event;
-            ActionAim requirement = aimChoseEvent.getAimRequirement();
+            ActionAimRequirement requirement = aimChoseEvent.getAimRequirement();
             final List possibleAims = gameCore.findAims(requirement);
             if (requirement.getFilters().get(0).equals(ClassFilter.getInstance(UnitType.class))) {
                 final Stage dialog = createDialog();
@@ -216,11 +233,4 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         return dialog;
     }
 
-    private XY_D getRectangleCenter(Rectangle rectangle) {
-        final double minX = rectangle.getBoundsInParent().getMinX();
-        final double minY = rectangle.getBoundsInParent().getMinY();
-        final double maxX = rectangle.getBoundsInParent().getMaxX();
-        final double maxY = rectangle.getBoundsInParent().getMaxY();
-        return new XY_D((minX + maxX) / 2, (minY + maxY) / 2);
-    }
 }

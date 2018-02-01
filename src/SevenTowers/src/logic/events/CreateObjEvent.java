@@ -1,4 +1,9 @@
-package logic;
+package logic.events;
+
+import logic.AbstractEvent;
+import logic.GBoard;
+import logic.GObj;
+import logic.GameCell;
 
 public class CreateObjEvent extends AbstractEvent {
     private GameCell place;
