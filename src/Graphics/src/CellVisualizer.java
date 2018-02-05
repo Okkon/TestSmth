@@ -5,6 +5,8 @@ import logic.AbstractAction;
 import logic.GameCell;
 import logic.GameCore;
 
+import static javafx.scene.paint.Color.CHARTREUSE;
+
 public class CellVisualizer extends Rectangle implements Visualizer {
     private final Color baseColor = GraphicConstants.CELL_COLOR;
     private final Color baseStrokeColor = GraphicConstants.CELL_COLOR_STROKE;
@@ -30,9 +32,10 @@ public class CellVisualizer extends Rectangle implements Visualizer {
     @Override
     public void showSelectionPossibility(AbstractAction action) {
         setDefaults();
-        if (action != null) {
+        setFill(CHARTREUSE);
+        /*if (action != null) {
             timeline = AnimationHelper.createFillAnimation(this, baseColor.brighter());
             timeline.play();
-        }
+        }*/
     }
 }

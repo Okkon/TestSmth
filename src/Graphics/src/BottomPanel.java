@@ -2,7 +2,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import logic.GEvent;
 
 public class BottomPanel extends BorderPane {
     private final TextArea gameLog = new TextArea();
@@ -29,7 +28,7 @@ public class BottomPanel extends BorderPane {
         setCenter(gameLog);
     }
 
-    public void log(GEvent event) {
-        gameLog.appendText(event.toString() + "\n");
+    public void log(Object obj) {
+        gameLog.appendText(obj.toString() + "\n");
     }
 }

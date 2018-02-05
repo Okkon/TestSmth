@@ -20,9 +20,9 @@ public class ShiftObjAction extends AbstractAction {
 
     @Override
     public void doAction() {
-        final GObj obj = (GObj) getAim(0);
-        final GameCell place = (GameCell) getAim();
-        new ShiftObjectEvent(place, obj).process();
+        final GObj obj = getAim(0);
+        final GameCell place = getAim();
+        new ShiftObjectEvent(obj, place).process();
     }
 
 

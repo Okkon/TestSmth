@@ -50,4 +50,9 @@ public class UnitType {
     public List<Skill> getSkills() {
         return skills;
     }
+
+    @Override
+    public String toString() {
+        return "Type : " + typeName;
+    }
 }

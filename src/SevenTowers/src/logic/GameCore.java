@@ -1,5 +1,6 @@
 package logic;
 
+import logic.actions.CreateRandomUnitAction;
 import logic.actions.CreateUnitAction;
 import logic.actions.SelectUnitAction;
 import tools.PEConst;
@@ -25,11 +26,11 @@ public class GameCore {
     private List<GAction> actionList = Arrays.asList(
             CreateUnitAction.getInstance(),
             SelectUnitAction.getInstance(),
-            SelectUnitAction.getInstance(),
+            CreateRandomUnitAction.getInstance(),
             ShiftObjAction.getInstance()
     );
     private GAction selectedAction = actionList.get(0);
-    private Phase phase;
+    private Phase phase = new GamePhase();
 
     //-----------Logic-----------------------------------------
     public void press(PlaceHaving cell) {

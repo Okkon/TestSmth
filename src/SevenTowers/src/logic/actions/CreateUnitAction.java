@@ -1,10 +1,13 @@
 package logic.actions;
 
-import logic.*;
+import logic.AbstractAction;
+import logic.ClassFilter;
+import logic.GUnit;
+import logic.UnitType;
 import logic.events.CreateObjEvent;
 import tools.PEConst;
 
-public class CreateUnitAction<T extends GameCell> extends AbstractAction {
+public class CreateUnitAction extends AbstractAction {
     private static CreateUnitAction INSTANCE;
 
     private CreateUnitAction() {

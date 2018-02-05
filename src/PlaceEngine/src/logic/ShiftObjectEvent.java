@@ -5,7 +5,7 @@ public class ShiftObjectEvent extends AbstractEvent {
     private GameCell fromCell;
     private GObj obj;
 
-    public ShiftObjectEvent(GameCell toCell, GObj obj) {
+    public ShiftObjectEvent(GObj obj, GameCell toCell) {
         this.obj = obj;
         this.toCell = toCell;
         this.fromCell = obj.getPlace();

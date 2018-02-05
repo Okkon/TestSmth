@@ -38,6 +38,9 @@ public class GameCell implements PlaceHaving {
     }
 
     public void link(GameCell cell, int length) {
+        if (linkedCells.containsKey(cell)) {
+            return;
+        }
         linkedCells.put(cell, length);
         cell.linkedCells.put(this, length);
     }

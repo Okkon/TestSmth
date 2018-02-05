@@ -1,8 +1,7 @@
 package logic.skills;
 
-import logic.ClassFilter;
 import logic.IsNearFilter;
-import logic.PlaceHaving;
+import logic.STConst;
 import logic.Skill;
 import logic.attack.AttackProps;
 import logic.events.AttackEvent;
@@ -16,7 +15,7 @@ public class AttackSkill extends Skill {
 
     @Override
     public void init() {
-        addAimFilter("Where to attack", ClassFilter.getInstance(PlaceHaving.class), IsNearFilter.getInstance());
+        addAimFilter("Who to attack", STConst.UNIT_FILTER, IsNearFilter.getInstance());
     }
 
     @Override

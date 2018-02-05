@@ -3,7 +3,7 @@ package logic.actions;
 import logic.*;
 import logic.events.ActionSelectionEvent;
 
-public class SelectUnitAction<T extends GUnit> extends AbstractAction {
+public class SelectUnitAction extends AbstractAction {
     private static SelectUnitAction INSTANCE = new SelectUnitAction();
 
     private SelectUnitAction() {

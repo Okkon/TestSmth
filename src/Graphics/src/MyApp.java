@@ -79,7 +79,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     private void initBoard() {
         final GBoard board = GBoard.getInstance();
-        board.init(10, 8);
+        board.init(GraphicConstants.BOARD_HEIGHT, GraphicConstants.BOARD_WIDTH);
         for (GameCell cell : board.getAllCells()) {
             int length = GraphicConstants.CELL_SIZE;
             int tap = GraphicConstants.CELL_TAP;
@@ -104,13 +104,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doBeforeEvent(GEvent event) {
+    }
+
+    private void log(GEvent event) {
         System.out.println(event);
         bottomPanel.log(event);
     }
 
     @Override
     public void doAfterEvent(GEvent event) {
-//        System.out.println(event);
+        log(event);
         /*---------------ActionSelectionEvent---------------------*/
         if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
@@ -135,6 +138,10 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             rightPanel.showUnitInfo(unit);
             parent.getChildren().add(visualizer);
             visualizer.create();
+            /*-------ActionPerformEvent-----------*/
+        } else if (event instanceof AbstractAction.ActionPerformEvent) {
+            AbstractAction.ActionPerformEvent actionPerformEvent = (AbstractAction.ActionPerformEvent) event;
+            bottomPanel.log("----------------------------");
             /*-------FailedSelectionAttemptEvent-----------*/
         } else if (event instanceof FailedSelectionAttemptEvent) {
             FailedSelectionAttemptEvent selectionAttemptEvent = (FailedSelectionAttemptEvent) event;

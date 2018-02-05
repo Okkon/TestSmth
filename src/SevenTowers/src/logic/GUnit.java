@@ -1,6 +1,7 @@
 package logic;
 
 import logic.attack.AttackProps;
+import logic.skills.MoveSkill;
 
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class GUnit extends GObj {
     }
 
     public GAction getBaseAction() {
-        ShiftObjAction shiftObjAction = ShiftObjAction.getInstance();
-        shiftObjAction.tryToSelect(this);
-        return shiftObjAction;
+        MoveSkill moveSkill = MoveSkill.getInstance();
+        moveSkill.setActor(this);
+        return moveSkill;
     }
 
     public int loseMp(int k) {

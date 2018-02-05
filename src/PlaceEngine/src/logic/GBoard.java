@@ -3,6 +3,7 @@ package logic;
 import utils.XY;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GBoard {
     private static GBoard INSTANCE = new GBoard();
@@ -31,12 +32,18 @@ public class GBoard {
                 GameCell rightCell = board.get(xy.changeX(1));
                 GameCell bottomCell = board.get(xy.changeY(1));
                 GameCell diagonalCell = board.get(xy.changeX(1).changeY(1));
+                GameCell diagonalCell2 = board.get(xy.changeX(-1).changeY(1));
                 if (rightCell != null) {
                     cell.link(rightCell, XY.straightLength);
-                } else if (bottomCell != null) {
+                }
+                if (bottomCell != null) {
                     cell.link(bottomCell, XY.straightLength);
-                } else if (diagonalCell != null) {
+                }
+                if (diagonalCell != null) {
                     cell.link(diagonalCell, XY.diagonalLength);
+                }
+                if (diagonalCell2 != null) {
+                    cell.link(diagonalCell2, XY.diagonalLength);
                 }
             }
         }
@@ -59,6 +66,17 @@ public class GBoard {
 
     public Collection<GameCell> getAllCells() {
         return board.values();
+    }
+
+    public List<GameCell> getAllCells(GFilter... filters) {
+        return board.values().stream().filter(gameCell -> {
+            for (GFilter filter : filters) {
+                if (!filter.isOk(gameCell)) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
     }
 
     private <T> Collection<T> filterCollection(List<GFilter> aimFilters, Collection<T> values) {

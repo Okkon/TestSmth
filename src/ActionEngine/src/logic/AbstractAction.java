@@ -63,8 +63,8 @@ public abstract class AbstractAction implements GAction {
 
     @Override
     public void perform() {
-        doAction();
-        afterPerform();
+        new ActionPerformEvent(this).process();
+        clearAims();
     }
 
     @Override
@@ -80,9 +80,6 @@ public abstract class AbstractAction implements GAction {
         return actionAimRequirements;
     }
 
-    protected void afterPerform() {
-        clearAims();
-    }
 
     private void clearAims() {
         for (ActionAimRequirement actionAimRequirement : actionAimRequirements) {
@@ -153,4 +150,21 @@ public abstract class AbstractAction implements GAction {
         }
     }
 
+    public class ActionPerformEvent extends AbstractEvent {
+        private final AbstractAction action;
+
+        public ActionPerformEvent(AbstractAction action) {
+            this.action = action;
+        }
+
+        @Override
+        protected void perform() {
+            action.doAction();
+        }
+
+        @Override
+        public String toString() {
+            return action + " is performed";
+        }
+    }
 }
