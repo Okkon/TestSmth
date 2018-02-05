@@ -22,7 +22,12 @@ public class GameCore {
     }
 
     //--------Fields------------------
-    private List<GAction> actionList = Arrays.asList(CreateUnitAction.getInstance(), SelectUnitAction.getInstance(), ShiftObjAction.getInstance());
+    private List<GAction> actionList = Arrays.asList(
+            CreateUnitAction.getInstance(),
+            SelectUnitAction.getInstance(),
+            SelectUnitAction.getInstance(),
+            ShiftObjAction.getInstance()
+    );
     private GAction selectedAction = actionList.get(0);
     private Phase phase;
 

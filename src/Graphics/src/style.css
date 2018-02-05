@@ -1,14 +1,6 @@
-#hplabel {
-    -fx-border-radius: 100;
-    -fx-background-color: linear-gradient(#ffebcd, #deb887);
-    -fx-border-color: orange;
-    -fx-font: bold 15pt
-}
-
 .label{
     -fx-background-color: #ffebcd;
 }
-
 .root{
     -fx-font: bold 12pt "Courier New";
 }
@@ -18,3 +10,36 @@
     -fx-border-color: rgb(49,89,23);
     -fx-text-fill: rgb(14,54,39)
 }
+
+#left-panel{
+    -fx-background-color: #336633;
+}
+#right-panel{
+    -fx-background-color: #336699;
+}
+#board{
+    -fx-border-color: orange;
+    -fx-border-width: 20;
+    -fx-background-color: #333300;
+}
+.unitPanel{
+    -fx-background-color: #abcdef;
+    -fx-border-color: orange;
+    -fx-border-width: 10;
+    -fx-spacing: 10;
+}
+#hplabel {
+    -fx-background-color: linear-gradient(#ffebcd, #deb887);
+    -fx-border-color: orange;
+    -fx-font: bold 15pt serif;
+}
+#notification_label {
+    -fx-background-color: linear-gradient(#ffebcd, #deb887);
+    -fx-text-alignment : center;
+    -fx-alignment: center;
+    -fx-font: bold 15pt serif;
+    -fx-text-fill: red;
+}
+
+
+

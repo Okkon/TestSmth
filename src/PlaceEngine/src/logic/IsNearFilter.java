@@ -12,6 +12,11 @@ public class IsNearFilter<T extends PlaceHaving> extends AbstractFilter<T> {
     }
 
     @Override
+    public String toString() {
+        return "Is near to " + place;
+    }
+
+    @Override
     public boolean isOk(T aim) {
         return this.place.getPlace().isLinkedWith(aim.getPlace());
     }

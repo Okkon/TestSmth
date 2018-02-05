@@ -1,7 +1,8 @@
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class GraphicConstants {
-    public static final int WINDOW_WIDTH = 1200;
+    public static final int WINDOW_WIDTH = 1600;
     public static final int WINDOW_HEIGHT = 800;
 
     public static final int CELL_SIZE = 65;
@@ -18,4 +19,6 @@ public class GraphicConstants {
     public static final double DIALOG_TYPE_SELECTOR_X = 920;
     public static final double DIALOG_TYPE_SELECTOR_Y = 320;
     public static final int DIALOG_TYPE_SELECTOR_IMAGE_VIEW_SIDE = 64;
+
+    public static Duration ANIMATION_DURATION = Duration.millis(1000);
 }

@@ -11,7 +11,11 @@ public class ActionAimRequirement {
 
     @Override
     public String toString() {
-        return name + " : " + filters.toString();
+        return String.format(
+                "%s : %s",
+                name,
+                selectedAim == null ? filters : selectedAim
+        );
     }
 
     public ActionAimRequirement(String aimName, GFilter[] filters) {

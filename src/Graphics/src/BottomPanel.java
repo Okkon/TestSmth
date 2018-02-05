@@ -1,10 +1,17 @@
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import logic.GEvent;
 
-public class BottomPane extends Pane {
-    public BottomPane() {
-        TreeItem<String> tree = new TreeItem<>("Root Node");
+public class BottomPanel extends BorderPane {
+    private final TextArea gameLog = new TextArea();
+    private final TreeItem<String> tree;
+
+    public BottomPanel() {
+        gameLog.setEditable(false);
+
+        tree = new TreeItem<>("Root Node");
         tree.setExpanded(true);
         final TreeItem<String> stringTreeItem = new TreeItem<>("Item 1");
         stringTreeItem.getChildren().addAll(
@@ -17,6 +24,12 @@ public class BottomPane extends Pane {
                 new TreeItem<>("Item 3")
         );
         TreeView<String> treeView = new TreeView<>(tree);
-        getChildren().add(treeView);
+
+        setLeft(treeView);
+        setCenter(gameLog);
+    }
+
+    public void log(GEvent event) {
+        gameLog.appendText(event.toString() + "\n");
     }
 }

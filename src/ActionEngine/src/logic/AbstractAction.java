@@ -25,7 +25,7 @@ public abstract class AbstractAction implements GAction {
         }
     }
 
-    private ActionAimRequirement getAimToSelect() {
+    private ActionAimRequirement getAimRequirement() {
         for (ActionAimRequirement actionAimRequirement : actionAimRequirements) {
             if (actionAimRequirement.getSelectedAim() == null) {
                 return actionAimRequirement;
@@ -58,7 +58,7 @@ public abstract class AbstractAction implements GAction {
     }
 
     protected boolean allAimsSelected() {
-        return getAimToSelect() == null;
+        return getAimRequirement() == null;
     }
 
     @Override
@@ -70,7 +70,7 @@ public abstract class AbstractAction implements GAction {
     @Override
     public final void tryToSelect(Object obj) {
         if (canSelect(obj)) {
-            getAimToSelect().setSelectedAim(obj);
+            getAimRequirement().setSelectedAim(obj);
             aimSelectionStep();
         }
     }
@@ -93,9 +93,10 @@ public abstract class AbstractAction implements GAction {
     public abstract void doAction();
 
     public boolean canSelect(Object obj) {
-        List<? extends GFilter> filters = getAimToSelect().getFilters();
+        List<? extends GFilter> filters = getAimRequirement().getFilters();
         for (GFilter filter : filters) {
-            if (!filter.check(obj)) {
+            if (!filter.isOk(obj)) {
+                new FailedSelectionAttemptEvent(this, filter, obj).process();
                 return false;
             }
         }
@@ -126,19 +127,20 @@ public abstract class AbstractAction implements GAction {
 
     public static class AimChoseEvent extends AbstractEvent {
         private AbstractAction action;
-        private ActionAimRequirement aim;
+        private ActionAimRequirement aimRequirement;
 
         public ActionAimRequirement getAimRequirement() {
-            return aim;
+            return aimRequirement;
         }
 
         public AimChoseEvent(AbstractAction action) {
             this.action = action;
+            this.aimRequirement = action.getAimRequirement();
         }
 
         @Override
         protected void perform() {
-            aim = action.getAimToSelect();
+            //do nothing, needed for graphics
         }
 
         public AbstractAction getAction() {
@@ -147,7 +149,7 @@ public abstract class AbstractAction implements GAction {
 
         @Override
         public String toString() {
-            return String.format("Aim to choose: %s", aim);
+            return String.format("Aim to choose: %s", aimRequirement);
         }
     }
 

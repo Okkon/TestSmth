@@ -40,7 +40,7 @@ public class GUnit extends GObj {
 
     @Override
     public String toString() {
-        return String.format("%s(id=%s)", unitType.getTypeName(), id);
+        return String.format("%s(id=%s, %s)", unitType.getTypeName(), id, getPlace());
     }
 
     public int loseHp(AttackProps damage) {
