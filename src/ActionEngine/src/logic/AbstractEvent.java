@@ -92,8 +92,8 @@ public abstract class AbstractEvent implements GEvent {
     }
 
     protected void processInnerEvent(GEvent eventToDo) {
-//        eventToDo.process();
-        AbstractEvent.addListener(this.getClass(), new GEventListener() {
+        eventToDo.process();
+/*        AbstractEvent.addListener(this.getClass(), new GEventListener() {
             @Override
             public void doAfterEvent(GEvent event) {
                 eventToDo.process();
@@ -108,6 +108,7 @@ public abstract class AbstractEvent implements GEvent {
             public boolean isToBeRemoved() {
                 return true;
             }
-        });
+        })*/
+        ;
     }
 }

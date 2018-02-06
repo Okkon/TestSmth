@@ -53,6 +53,7 @@ public class UnitTypeSelector {
                 lastSelected = imageView;
                 imageView.setStyle("-fx-opacity: 0.5;");
                 action.tryToSelect(unitType);
+                dialog.close();
             });
             HBox box = new HBox();
             box.getChildren().add(imageView);

@@ -81,4 +81,8 @@ public class GameCore {
     public List<Player> getPlayers() {
         return playerList;
     }
+
+    public GAction getSelectedAction() {
+        return selectedAction;
+    }
 }

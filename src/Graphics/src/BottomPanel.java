@@ -22,6 +22,7 @@ public class BottomPanel extends BorderPane {
         tree.setExpanded(true);
 
         TreeView<String> treeView = new TreeView<>(tree);
+        treeView.setPrefWidth(450);
         setLeft(treeView);
         setCenter(gameLog);
     }
@@ -44,6 +45,7 @@ public class BottomPanel extends BorderPane {
     }
 
     public void closeNode(GEvent event) {
+        eventTreeItemMap.get(event).setValue(event.toString());
         eventTreeItemMap.remove(event);
         eventList.remove(event);
     }

@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -71,6 +72,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         root.setRight(rightPanel);
         root.setBottom(bottomPanel);
 
+        root.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+                gameCore.getSelectedAction().cancel();
+            } else if (keyEvent.getCode().equals(KeyCode.TAB)) {
+                log("TAB");
+            } else if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                log("ENTER");
+            }
+        });
+
         scene = new Scene(root, GraphicConstants.WINDOW_WIDTH, GraphicConstants.WINDOW_HEIGHT);
         scene.getStylesheets().add("style.css");
         primaryStage.setScene(scene);
@@ -131,8 +142,6 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             rightPanel.showActionSelection(actionSelectionEvent);
-        } else {
-            AnimationHelper.clearAnimations();
         }
         /*---------------CreateObjEvent---------------------*/
         if (event instanceof CreateObjEvent) {
@@ -180,6 +189,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             visualizer.moveTo(getRectangleCoords(rectangle));
             /*---------------AimChoseEvent---------------------*/
         } else if (event instanceof AbstractAction.AimChoseEvent) {
+            AnimationHelper.clearAnimations();
             AbstractAction.AimChoseEvent aimChoseEvent = (AbstractAction.AimChoseEvent) event;
             rightPanel.showAimChoose(aimChoseEvent);
             ActionAimRequirement requirement = aimChoseEvent.getAimRequirement();
