@@ -24,7 +24,7 @@ public class ClassFilter<T> extends AbstractFilter<T> {
 
     @Override
     public String toString() {
-        return "ClassFilter - " + aClass.getSimpleName();
+        return "ClassFilter : " + aClass.getSimpleName();
     }
 
     @Override

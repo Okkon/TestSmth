@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements OwnerHaving {
     public static final Player NEUTRAL = new Player("Neutral", Color.GREY);
     private String name;
     private int score;
@@ -61,5 +61,10 @@ public class Player {
 
     public Image getImage() {
         return image;
+    }
+
+    @Override
+    public Player getOwner() {
+        return this;
     }
 }

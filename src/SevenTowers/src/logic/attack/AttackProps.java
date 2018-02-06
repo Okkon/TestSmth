@@ -1,20 +1,26 @@
 package logic.attack;
 
 import logic.GUnit;
+import logic.OwnerHaving;
 
 import java.util.Random;
 
 public class AttackProps {
     static private Random r = new Random();
+    //skill props
     private int minDamage;
     private int randDamage;
-    private GUnit attacker;
+    private AttackTypes attackType;
+    //attack props
+    private OwnerHaving attacker;
     private GUnit aim;
+    //hit props
     private int totalDamage = -1;
 
     public AttackProps(int minDamage, int randDamage) {
         this.minDamage = minDamage;
         this.randDamage = randDamage;
+        this.attackType = AttackTypes.Physic;
     }
 
     public AttackProps generateHit() {
@@ -39,7 +45,7 @@ public class AttackProps {
         );
     }
 
-    public void setAttacker(GUnit attacker) {
+    public void setAttacker(OwnerHaving attacker) {
         this.attacker = attacker;
     }
 
@@ -51,7 +57,24 @@ public class AttackProps {
         return totalDamage;
     }
 
-    public GUnit getAttacker() {
+    public OwnerHaving getAttacker() {
         return attacker;
+    }
+
+    public int reduceDamage(int reduceBy, AttackTypes attackType) {
+        if (!this.attackType.equals(attackType)) {
+            return 0;
+        }
+        int value = Math.min(totalDamage, reduceBy);
+        totalDamage -= value;
+        return value;
+    }
+
+    public AttackTypes getAttackType() {
+        return attackType;
+    }
+
+    public void setAttackType(AttackTypes attackType) {
+        this.attackType = attackType;
     }
 }

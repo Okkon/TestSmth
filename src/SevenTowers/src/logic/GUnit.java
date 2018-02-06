@@ -11,9 +11,11 @@ public class GUnit extends GObj {
     private UnitType unitType;
     private int currentHp;
     private int currentMp;
+    //----from unitType if null
     private int maxHp;
     private int maxMp;
     private List<GMod> mods;
+    private List<Skill> skills;
 
     public GUnit(UnitType unitType) {
         super();
@@ -60,11 +62,26 @@ public class GUnit extends GObj {
         return currentHp;
     }
 
+
+    //---from unit type if null
     public int getMaxHp() {
         return maxHp > 0 ? maxHp : getType().getMaxHp();
     }
 
     public int getMaxMp() {
         return maxMp > 0 ? maxMp : getType().getMaxMp();
+    }
+
+    public List<GMod> getModes() {
+        return mods != null ? mods : getType().getMods();
+    }
+
+    public List<Skill> getSkills() {
+        return skills != null ? skills : getType().getSkills();
+    }
+    //----------------------------
+
+    public boolean hasMode(Class modeClass) {
+        return getModes().stream().anyMatch(modeClass::isInstance);
     }
 }

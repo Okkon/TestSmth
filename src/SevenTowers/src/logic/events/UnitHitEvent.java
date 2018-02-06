@@ -22,4 +22,12 @@ public class UnitHitEvent extends AbstractEvent {
     public String toString() {
         return String.format("%s takes hit with Damage = %s", aim, attackProps.getTotalDamage());
     }
+
+    public AttackProps getAttackProps() {
+        return attackProps;
+    }
+
+    public GUnit getAim() {
+        return aim;
+    }
 }

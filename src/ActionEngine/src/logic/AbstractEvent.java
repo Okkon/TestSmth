@@ -10,6 +10,7 @@ public abstract class AbstractEvent implements GEvent {
     private static final List<GEventListener<GEvent>> superListeners = new ArrayList<>();
     private boolean aborted = false;
 
+    @Override
     public final void process() {
         doBeforeEvent();
         if (!canBePerformed()) {
@@ -53,11 +54,9 @@ public abstract class AbstractEvent implements GEvent {
         List<GEventListener<GEvent>> listenerList = listenersMap.get(eventClass);
         if (listenerList == null) {
             listenerList = new ArrayList<>();
-            listenerList.add(listener);
             listenersMap.put(eventClass, listenerList);
-        } else {
-            listenerList.add(listener);
         }
+        listenerList.add(listener);
     }
 
     public static void removeListener(Class<? extends GEvent> eventClass, GEventListener listener) {
@@ -73,5 +72,16 @@ public abstract class AbstractEvent implements GEvent {
 
     protected void abort() {
         this.aborted = true;
+    }
+
+    public static GMod getListener(Class<? extends GEvent> eventClass, Class<? extends GMod> modClass) {
+        List<GEventListener<GEvent>> eventListeners = listenersMap.get(eventClass);
+        if (eventListeners != null) {
+            return (GMod) eventListeners.stream()
+                    .filter(modClass::isInstance)
+                    .findAny()
+                    .orElse(null);
+        }
+        return null;
     }
 }
