@@ -1,15 +1,12 @@
 package logic;
 
 public abstract class GMod<T extends GEvent> implements GEventListener<T> {
-    protected final int value;
-
-    public GMod(int value, Class<? extends GEvent> eventClass) {
-        this.value = value;
-        register(eventClass);
+    public GMod(Class<? extends GEvent> eventClass, boolean allowDuplicates) {
+        register(eventClass, allowDuplicates);
     }
 
-    public void register(Class<? extends GEvent> eventClass) {
-        if (AbstractEvent.getListener(eventClass, this.getClass()) == null) {
+    public void register(Class<? extends GEvent> eventClass, boolean allowDuplicates) {
+        if (allowDuplicates || AbstractEvent.getListener(eventClass, this.getClass()) == null) {
             AbstractEvent.addListener(eventClass, this);
         }
     }

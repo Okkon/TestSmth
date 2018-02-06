@@ -1,12 +1,11 @@
 package logic.mods;
 
-import logic.GMod;
 import logic.ModeActivationEvent;
 import logic.attack.AttackTypes;
 import logic.events.UnitHitEvent;
 
 
-public class Armor<T extends UnitHitEvent> extends GMod<T> {
+public class Armor<T extends UnitHitEvent> extends UnitMod<T> {
 
     public Armor(int value) {
         super(value, UnitHitEvent.class);
