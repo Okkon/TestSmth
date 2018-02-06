@@ -1,9 +1,6 @@
 package logic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractEvent implements GEvent {
     private static final Map<Class, List<GEventListener<GEvent>>> listenersMap = new HashMap<>();
@@ -26,8 +23,15 @@ public abstract class AbstractEvent implements GEvent {
     protected void doBeforeEvent() {
         for (Map.Entry<Class, List<GEventListener<GEvent>>> entry : listenersMap.entrySet()) {
             if (entry.getKey().isInstance(this)) {
-                for (GEventListener<GEvent> listener : entry.getValue()) {
+                List<GEventListener<GEvent>> listenerList = entry.getValue();
+                listenerList.sort(Comparator.comparingDouble(GEventListener::getPriority));
+                Iterator<GEventListener<GEvent>> iterator = listenerList.iterator();
+                while (iterator.hasNext()) {
+                    GEventListener<GEvent> listener = iterator.next();
                     listener.doBeforeEvent(this);
+                    if (listener.isToBeRemoved()) {
+                        iterator.remove();
+                    }
                 }
             }
         }
@@ -36,8 +40,15 @@ public abstract class AbstractEvent implements GEvent {
     protected void doAfterEvent() {
         for (Map.Entry<Class, List<GEventListener<GEvent>>> entry : listenersMap.entrySet()) {
             if (entry.getKey().isInstance(this)) {
-                for (GEventListener<GEvent> listener : entry.getValue()) {
+                List<GEventListener<GEvent>> listenerList = entry.getValue();
+                listenerList.sort(Comparator.comparingDouble(GEventListener::getPriority));
+                Iterator<GEventListener<GEvent>> iterator = listenerList.iterator();
+                while (iterator.hasNext()) {
+                    GEventListener<GEvent> listener = iterator.next();
                     listener.doAfterEvent(this);
+                    if (listener.isToBeRemoved()) {
+                        iterator.remove();
+                    }
                 }
             }
         }

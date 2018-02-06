@@ -1,7 +1,21 @@
 package logic;
 
 public interface GEventListener<T extends GEvent> {
-    void doBeforeEvent(T event);
+    int BASE_PRIORITY = 100;
 
-    void doAfterEvent(T event);
+    default void doBeforeEvent(T event) {
+        //DO NOTHING
+    }
+
+    default void doAfterEvent(T event) {
+        //DO NOTHING
+    }
+
+    default double getPriority() {
+        return BASE_PRIORITY;
+    }
+
+    default boolean isToBeRemoved() {
+        return false;
+    }
 }

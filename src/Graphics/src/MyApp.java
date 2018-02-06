@@ -108,9 +108,9 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         log(event);
     }
 
-    private void log(GEvent event) {
-        System.out.println(event);
-        bottomPanel.log(event);
+    private void log(Object s) {
+        System.out.println(s);
+        bottomPanel.log(s);
     }
 
     @Override
