@@ -11,6 +11,8 @@ public class GUnit extends GObj {
     private UnitType unitType;
     private int currentHp;
     private int currentMp;
+    private int maxHp;
+    private int maxMp;
     private List<GMod> mods;
 
     public GUnit(UnitType unitType) {
@@ -56,5 +58,13 @@ public class GUnit extends GObj {
 
     public int getHp() {
         return currentHp;
+    }
+
+    public int getMaxHp() {
+        return maxHp > 0 ? maxHp : getType().getMaxHp();
+    }
+
+    public int getMaxMp() {
+        return maxMp > 0 ? maxMp : getType().getMaxMp();
     }
 }

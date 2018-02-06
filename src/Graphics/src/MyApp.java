@@ -9,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.*;
+import logic.actions.SelectUnitAction;
 import logic.events.ActionSelectionEvent;
 import logic.events.CreateObjEvent;
 import logic.events.UnitDeathEvent;
@@ -79,7 +80,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     private void initBoard() {
         final GBoard board = GBoard.getInstance();
-        board.init(GraphicConstants.BOARD_HEIGHT, GraphicConstants.BOARD_WIDTH);
+        board.init(STConst.BOARD_WIDTH, STConst.BOARD_HEIGHT);
         for (GameCell cell : board.getAllCells()) {
             int length = GraphicConstants.CELL_SIZE;
             int tap = GraphicConstants.CELL_TAP;
@@ -104,6 +105,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doBeforeEvent(GEvent event) {
+        log(event);
     }
 
     private void log(GEvent event) {
@@ -113,7 +115,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
     @Override
     public void doAfterEvent(GEvent event) {
-        log(event);
+//        log(event);
+        /*---------------ActionSelectionEvent---------------------*/
+        if (event instanceof AbstractAction.ActionPerformEvent) {
+            AbstractAction.ActionPerformEvent performEvent = (AbstractAction.ActionPerformEvent) event;
+            AbstractAction action = performEvent.getAction();
+            if (action instanceof SelectUnitAction) {
+                SelectUnitAction selectUnitAction = (SelectUnitAction) action;
+                rightPanel.showUnitInfo(selectUnitAction.getAim());
+            }
+        }
         /*---------------ActionSelectionEvent---------------------*/
         if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;

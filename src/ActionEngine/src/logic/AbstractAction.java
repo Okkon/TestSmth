@@ -65,6 +65,9 @@ public abstract class AbstractAction implements GAction {
     public void perform() {
         new ActionPerformEvent(this).process();
         clearAims();
+        if (!actionAimRequirements.isEmpty()) {
+            new AimChoseEvent(this).process();
+        }
     }
 
     @Override
@@ -165,6 +168,10 @@ public abstract class AbstractAction implements GAction {
         @Override
         public String toString() {
             return action + " is performed";
+        }
+
+        public AbstractAction getAction() {
+            return action;
         }
     }
 }

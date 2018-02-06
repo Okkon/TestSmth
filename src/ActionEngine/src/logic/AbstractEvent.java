@@ -70,4 +70,8 @@ public abstract class AbstractEvent implements GEvent {
     public static void addSuperListener(GEventListener<GEvent> listener) {
         superListeners.add(listener);
     }
+
+    protected void abort() {
+        this.aborted = true;
+    }
 }

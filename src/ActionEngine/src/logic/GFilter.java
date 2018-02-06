@@ -1,9 +1,9 @@
 package logic;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface GFilter<T> {
     boolean isOk(T obj);
 
-    void filter(Collection<T> collection);
+    List<T> filter(List<T> collection);
 }

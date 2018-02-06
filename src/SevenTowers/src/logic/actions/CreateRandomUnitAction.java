@@ -36,6 +36,8 @@ public class CreateRandomUnitAction extends AbstractAction {
     }
 
     private GUnit findUnit() {
-        return new GUnit(BaseTypes.getTypes().get(r.nextInt(BaseTypes.values().length)));
+        GUnit unit = new GUnit(BaseTypes.getTypes().get(r.nextInt(BaseTypes.values().length)));
+        unit.setOwner(GameCore.getInstance().getPlayers().get(r.nextInt(2)));
+        return unit;
     }
 }

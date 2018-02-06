@@ -1,7 +1,7 @@
 package logic;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class AbstractFilter<T> implements GFilter<T> {
 
@@ -11,7 +11,7 @@ public abstract class AbstractFilter<T> implements GFilter<T> {
     }
 
     @Override
-    public void filter(Collection<T> collection) {
+    public List<T> filter(List<T> collection) {
         Iterator<T> iterator = collection.iterator();
         while (iterator.hasNext()) {
             T next = iterator.next();
@@ -19,6 +19,7 @@ public abstract class AbstractFilter<T> implements GFilter<T> {
                 iterator.remove();
             }
         }
+        return collection;
     }
 
 

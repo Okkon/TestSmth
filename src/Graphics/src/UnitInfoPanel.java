@@ -19,6 +19,8 @@ import java.util.List;
 public class UnitInfoPanel extends GridPane {
 
     private GUnit unit;
+    private Label hpLabel;
+    private Label mpLabel;
 
     public UnitInfoPanel() {
         super();
@@ -106,9 +108,11 @@ public class UnitInfoPanel extends GridPane {
         add(new Label("Name: "), 1, 0);
         add(new Label(unitType.getTypeName()), 2, 0);
         add(new Label("HP:"), 1, 1);
-        add(new Label(String.valueOf(unitType.getMaxHp())), 2, 1);
+        hpLabel = new Label(String.valueOf(unitType.getMaxHp()));
+        add(hpLabel, 2, 1);
         add(new Label("MP:"), 1, 2);
-        add(new Label(String.valueOf(unitType.getMaxMp())), 2, 2);
+        mpLabel = new Label(String.valueOf(unitType.getMaxMp()));
+        add(mpLabel, 2, 2);
         add(skillsBox, 1, 3, REMAINING, 1);
         add(modListView, 1, 4, REMAINING, 1);
         add(textArea, 0, 5, REMAINING, 1);
@@ -127,6 +131,8 @@ public class UnitInfoPanel extends GridPane {
     public void setUnit(GUnit unit) {
         setUnitLocal(unit);
         setObjType(unit.getType());
+        hpLabel.setText(String.format("%s/%s", unit.getHp(), unit.getMaxHp()));
+        mpLabel.setText(String.format("%s/%s", unit.getMp(), unit.getMaxMp()));
     }
 
     public void setUnitLocal(GUnit unitLocal) {
