@@ -7,7 +7,6 @@ import java.util.Map;
 
 public abstract class AbstractEvent implements GEvent {
     private static final Map<Class, List<GEventListener<GEvent>>> listenersMap = new HashMap<>();
-    private static final List<GEventListener<GEvent>> superListeners = new ArrayList<>();
     private boolean aborted = false;
 
     @Override
@@ -25,25 +24,21 @@ public abstract class AbstractEvent implements GEvent {
     }
 
     protected void doBeforeEvent() {
-        for (GEventListener<GEvent> superListener : superListeners) {
-            superListener.doBeforeEvent(this);
-        }
-        List<GEventListener<GEvent>> listenerList = listenersMap.get(getClass());
-        if (listenerList != null) {
-            for (GEventListener<GEvent> listener : listenerList) {
-                listener.doBeforeEvent(this);
+        for (Map.Entry<Class, List<GEventListener<GEvent>>> entry : listenersMap.entrySet()) {
+            if (entry.getKey().isInstance(this)) {
+                for (GEventListener<GEvent> listener : entry.getValue()) {
+                    listener.doBeforeEvent(this);
+                }
             }
         }
     }
 
     protected void doAfterEvent() {
-        for (GEventListener<GEvent> superListener : superListeners) {
-            superListener.doAfterEvent(this);
-        }
-        List<GEventListener<GEvent>> listenerList = listenersMap.get(getClass());
-        if (listenerList != null) {
-            for (GEventListener<GEvent> listener : listenerList) {
-                listener.doAfterEvent(this);
+        for (Map.Entry<Class, List<GEventListener<GEvent>>> entry : listenersMap.entrySet()) {
+            if (entry.getKey().isInstance(this)) {
+                for (GEventListener<GEvent> listener : entry.getValue()) {
+                    listener.doAfterEvent(this);
+                }
             }
         }
     }
@@ -64,10 +59,6 @@ public abstract class AbstractEvent implements GEvent {
         if (listenerList != null) {
             listenerList.remove(listener);
         }
-    }
-
-    public static void addSuperListener(GEventListener<GEvent> listener) {
-        superListeners.add(listener);
     }
 
     protected void abort() {

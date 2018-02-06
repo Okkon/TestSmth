@@ -75,7 +75,7 @@ public class MyApp extends Application implements GEventListener<GEvent> {
         scene.getStylesheets().add("style.css");
         primaryStage.setScene(scene);
 
-        AbstractEvent.addSuperListener(this);
+        AbstractEvent.addListener(GEvent.class, this);
     }
 
     private void initBoard() {
