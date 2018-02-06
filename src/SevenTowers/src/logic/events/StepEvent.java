@@ -24,7 +24,7 @@ public class StepEvent extends AbstractEvent {
     protected void perform() {
         if (stepPrice <= actor.getMp()) {
             actor.loseMp(stepPrice);
-            new ShiftObjectEvent(actor, toCell).process();
+            processInnerEvent(new ShiftObjectEvent(actor, toCell));
         } else {
             abort();
         }

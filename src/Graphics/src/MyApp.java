@@ -103,18 +103,20 @@ public class MyApp extends Application implements GEventListener<GEvent> {
     }
 
 
-    @Override
-    public void doBeforeEvent(GEvent event) {
-        log(event);
-    }
-
     private void log(Object s) {
-        System.out.println(s);
+        //System.out.println(s);
         bottomPanel.log(s);
     }
 
     @Override
+    public void doBeforeEvent(GEvent event) {
+        bottomPanel.openNode(event);
+        log(event);
+    }
+
+    @Override
     public void doAfterEvent(GEvent event) {
+        bottomPanel.closeNode(event);
 //        log(event);
         /*---------------ActionSelectionEvent---------------------*/
         if (event instanceof AbstractAction.ActionPerformEvent) {
@@ -204,6 +206,11 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                 }
             }
         }
+    }
+
+    @Override
+    public double getPriority() {
+        return STConst.APP_LISTENER_PRIORITY;
     }
 
     private XY_D getRectangleCoords(Rectangle rectangle) {

@@ -20,7 +20,7 @@ public class UnitLoseHpEvent extends AbstractEvent {
         lostHp = aim.loseHp(attackProps);
         remainedHp = aim.getHp();
         if (remainedHp < 1) {
-            new UnitDeathEvent(aim, attackProps).process();
+            processInnerEvent(new UnitDeathEvent(aim, attackProps));
         }
     }
 

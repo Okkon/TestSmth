@@ -15,7 +15,7 @@ public class UnitHitEvent extends AbstractEvent {
 
     @Override
     protected void perform() {
-        new UnitLoseHpEvent(aim, attackProps).process();
+        processInnerEvent(new UnitLoseHpEvent(aim, attackProps));
     }
 
     @Override

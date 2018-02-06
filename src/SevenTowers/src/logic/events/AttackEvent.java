@@ -24,6 +24,6 @@ public class AttackEvent extends AbstractEvent {
 
     @Override
     protected void perform() {
-        new StrikeEvent(actor, aim, attackProps).process();
+        processInnerEvent(new StrikeEvent(actor, aim, attackProps));
     }
 }

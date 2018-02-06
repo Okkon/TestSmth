@@ -21,7 +21,8 @@ public class StrikeEvent extends AbstractEvent {
         if (aim instanceof GUnit) {
             GUnit unit = (GUnit) aim;
             attackProps.setAim(unit);
-            new UnitHitEvent(unit, attackProps.generateHit()).process();
+            attackProps.generateHit();
+            processInnerEvent(new UnitHitEvent(unit, attackProps));
         }
     }
 

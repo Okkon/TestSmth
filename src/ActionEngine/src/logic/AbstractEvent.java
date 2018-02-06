@@ -6,6 +6,10 @@ public abstract class AbstractEvent implements GEvent {
     private static final Map<Class, List<GEventListener<GEvent>>> listenersMap = new HashMap<>();
     private boolean aborted = false;
 
+    public AbstractEvent() {
+        System.out.println(getClass().getSimpleName());
+    }
+
     @Override
     public final void process() {
         doBeforeEvent();
@@ -85,5 +89,25 @@ public abstract class AbstractEvent implements GEvent {
                     .orElse(null);
         }
         return null;
+    }
+
+    protected void processInnerEvent(GEvent eventToDo) {
+//        eventToDo.process();
+        AbstractEvent.addListener(this.getClass(), new GEventListener() {
+            @Override
+            public void doAfterEvent(GEvent event) {
+                eventToDo.process();
+            }
+
+            @Override
+            public double getPriority() {
+                return 10;
+            }
+
+            @Override
+            public boolean isToBeRemoved() {
+                return true;
+            }
+        });
     }
 }
