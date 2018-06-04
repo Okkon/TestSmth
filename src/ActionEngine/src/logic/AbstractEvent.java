@@ -7,6 +7,7 @@ public abstract class AbstractEvent implements GEvent {
     private boolean aborted = false;
 
     public AbstractEvent() {
+        //TODO: get rid of constructor
         System.out.println(getClass().getSimpleName());
     }
 

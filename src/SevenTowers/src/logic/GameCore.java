@@ -85,4 +85,8 @@ public class GameCore {
     public GAction getSelectedAction() {
         return selectedAction;
     }
+
+    public Phase getPhase() {
+        return phase;
+    }
 }

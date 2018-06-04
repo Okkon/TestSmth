@@ -2,10 +2,10 @@ package logic;
 
 import logic.mods.Armor;
 import logic.skills.AttackSkill;
+import logic.skills.EndTurnSkill;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public enum BaseTypes {
@@ -13,33 +13,34 @@ public enum BaseTypes {
             "Footman",
             6,
             21,
-            Collections.singletonList(new AttackSkill(2, 2)),
+            Arrays.asList(new AttackSkill(2, 2), EndTurnSkill.getInstance()),
             new Armor(2)
     ),
     Inquisitor(
             "Inquisitor",
             5,
             26,
-            Arrays.asList(new AttackSkill(2, 2))
+            Arrays.asList(new AttackSkill(2, 2), EndTurnSkill.getInstance())
     ),
     Archer(
             "Archer",
             2,
             21,
-            Arrays.asList(new AttackSkill(1, 1))
+            Arrays.asList(new AttackSkill(1, 1), EndTurnSkill.getInstance())
     ),
     Mage(
             "Mage",
             1,
             21,
-            Arrays.asList(new AttackSkill(0, 2))
+            Arrays.asList(new AttackSkill(0, 2), EndTurnSkill.getInstance())
     ),
     Assassin(
             "Assassin",
             4,
             31,
-            Collections.singletonList(new AttackSkill(1, 3))
+            Arrays.asList(new AttackSkill(1, 3), EndTurnSkill.getInstance())
     );
+
 
     private UnitType unitType;
 

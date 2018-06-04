@@ -3,7 +3,7 @@ package logic;
 import java.util.List;
 
 public interface GAction {
-    void cancel();
+    ActionAimRequirement cancel();
 
     void aimSelectionStep();
 

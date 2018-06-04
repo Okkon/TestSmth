@@ -17,12 +17,14 @@ public abstract class AbstractAction implements GAction {
     public abstract void init();
 
     @Override
-    public void cancel() {
+    public ActionAimRequirement cancel() {
         ActionAimRequirement lastSelectedAim = getLastSelectedAim();
         if (lastSelectedAim != null) {
             lastSelectedAim.setSelectedAim(null);
             aimSelectionStep();
+            return lastSelectedAim;
         }
+        return null;
     }
 
     private ActionAimRequirement getAimRequirement() {
@@ -64,7 +66,6 @@ public abstract class AbstractAction implements GAction {
     @Override
     public void perform() {
         new ActionPerformEvent(this).process();
-        clearAims();
     }
 
     @Override
@@ -160,6 +161,7 @@ public abstract class AbstractAction implements GAction {
         @Override
         protected void perform() {
             action.doAction();
+            action.clearAims();
         }
 
         @Override

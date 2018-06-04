@@ -10,11 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.*;
-import logic.actions.SelectUnitAction;
-import logic.events.ActionSelectionEvent;
-import logic.events.CreateObjEvent;
-import logic.events.UnitDeathEvent;
-import logic.events.UnitLoseHpEvent;
+import logic.events.*;
 import utils.XY;
 import utils.XY_D;
 
@@ -74,7 +70,9 @@ public class MyApp extends Application implements GEventListener<GEvent> {
 
         root.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
-                gameCore.getSelectedAction().cancel();
+                if (gameCore.getSelectedAction().cancel() == null) {
+                    new ActionSelectionEvent(gameCore.getPhase().getBaseAction()).process();
+                }
             } else if (keyEvent.getCode().equals(KeyCode.TAB)) {
                 log("TAB");
             } else if (keyEvent.getCode().equals(KeyCode.ENTER)) {
@@ -129,19 +127,36 @@ public class MyApp extends Application implements GEventListener<GEvent> {
     public void doAfterEvent(GEvent event) {
         bottomPanel.closeNode(event);
 //        log(event);
-        /*---------------ActionSelectionEvent---------------------*/
+        /*---------------ActionPerformEvent---------------------*/
         if (event instanceof AbstractAction.ActionPerformEvent) {
             AbstractAction.ActionPerformEvent performEvent = (AbstractAction.ActionPerformEvent) event;
             AbstractAction action = performEvent.getAction();
-            if (action instanceof SelectUnitAction) {
-                SelectUnitAction selectUnitAction = (SelectUnitAction) action;
-                rightPanel.showUnitInfo(selectUnitAction.getAim());
+            if (action instanceof Skill) {
+                Skill skill = (Skill) action;
+                rightPanel.showUnitInfo(skill.getActor());
+                if (skill.endsTurn()) {
+                    new ActionSelectionEvent(gameCore.getPhase().getBaseAction()).process();
+                    new EndTurnEvent(skill.getActor()).process();
+                } else {
+                    new AbstractAction.AimChoseEvent(skill).process();
+                    if (skill.getActor().getMp() == 0) {
+                        new EndTurnEvent(skill.getActor()).process();
+                    }
+                }
+            } else {
+                if (action == gameCore.getSelectedAction()) {
+                    new ActionSelectionEvent(gameCore.getPhase().getBaseAction()).process();
+                }
             }
         }
         /*---------------ActionSelectionEvent---------------------*/
         if (event instanceof ActionSelectionEvent) {
             ActionSelectionEvent actionSelectionEvent = (ActionSelectionEvent) event;
             rightPanel.showActionSelection(actionSelectionEvent);
+            if (actionSelectionEvent.getAction() instanceof Skill) {
+                Skill skill = (Skill) actionSelectionEvent.getAction();
+                rightPanel.showUnitInfo(skill.getActor());
+            }
         }
         /*---------------CreateObjEvent---------------------*/
         if (event instanceof CreateObjEvent) {
@@ -157,7 +172,6 @@ public class MyApp extends Application implements GEventListener<GEvent> {
                     GraphicConstants.VISUALIZER_SIZE, unit
             );
             objToVisualizerMap.put(obj, visualizer);
-            rightPanel.showUnitInfo(unit);
             parent.getChildren().add(visualizer);
             visualizer.create();
             /*-------ActionPerformEvent-----------*/
@@ -193,15 +207,16 @@ public class MyApp extends Application implements GEventListener<GEvent> {
             AbstractAction.AimChoseEvent aimChoseEvent = (AbstractAction.AimChoseEvent) event;
             rightPanel.showAimChoose(aimChoseEvent);
             ActionAimRequirement requirement = aimChoseEvent.getAimRequirement();
+            if (requirement == null) {
+                throw new RuntimeException(aimChoseEvent.getAction() + " has no aim requirements!");
+            }
             final List possibleAims = gameCore.findAims(requirement);
             if (requirement.getFilters().get(0).equals(ClassFilter.getInstance(UnitType.class))) {
                 final Stage dialog = createDialog();
                 dialog.initModality(Modality.NONE);
                 UnitTypeSelector unitTypeSelector = new UnitTypeSelector(BaseTypes.getTypes(), dialog, aimChoseEvent.getAction());
-                //TODO: add selector close on selectActionEvent
                 dialog.show();
             }
-//            AnimationHelper.clearAnimations();
             for (Object possibleAim : possibleAims) {
                 if (possibleAim instanceof GObj) {
                     GObj aim = (GObj) possibleAim;

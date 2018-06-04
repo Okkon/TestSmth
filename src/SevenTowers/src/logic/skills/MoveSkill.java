@@ -25,6 +25,7 @@ public class MoveSkill extends Skill {
 
     @Override
     public void init() {
+        setEndsUnitTurn(false);
         addAimFilter("Where to move", PEConst.CELL_FILTER, canMoveToFilter);
     }
 
